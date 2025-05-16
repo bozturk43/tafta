@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-
     const productData = {
       ...body,
       producerId: payload.id,
@@ -32,7 +31,6 @@ export async function POST(req: NextRequest) {
     };
 
     const docRef = await addDoc(collection(db, "products"), productData);
-
     return NextResponse.json({ productId: docRef.id });
   } catch (error) {
     console.error("Ürün eklenirken hata:", error);
