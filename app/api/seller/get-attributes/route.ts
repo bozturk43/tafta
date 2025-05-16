@@ -26,26 +26,22 @@ export async function GET(req: NextRequest) {
     } catch (err) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
-
     // role kontrolü
     if (payload.type !== "producer") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
-
     // Firestore'dan kendi ürünlerini çek
-    const productsRef = collection(db, "products");
-    const q = query(productsRef, where("producerId", "==", payload.id));
-    const querySnapshot = await getDocs(q);
-
-    const products = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return NextResponse.json({ products });
+    const attributesRef = collection(db, "attributes");
+    const querySnapshot = await getDocs(attributesRef);
+    const matchedDoc = querySnapshot.docs.find(doc => doc.id === payload.id);
+    if (!matchedDoc) {
+      return NextResponse.json({ attributes: [] });
+    }
+    const data = matchedDoc.data(); 
+    return NextResponse.json({ attributes:data });
 
   } catch (error) {
-    console.error("Error in products API:", error);
+    console.error("Error in attributes API:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

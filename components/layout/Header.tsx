@@ -33,8 +33,6 @@ export default function Header() {
     router.push("/")
   };
 
-  console.log(user)
-
   return (
     <AppBar position="static" color="default" elevation={1} className="border-b">
       <Toolbar className="flex w-full justify-between items-center px-6 py-2">

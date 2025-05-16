@@ -2,26 +2,15 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/context/authContext";
+import { getSellerProducts } from "@/app/lib/api/getSellerProducts";
 
 export default function SellerDashboardPage() {
   const { user } = useAuth();
-  console.log(user)
-  const fetchProducts = async () => {
-    const res = await fetch('http://localhost:3000/api/seller/get-products', {
-      headers: {
-        Authorization: `Bearer ${user?.token ?? ""}`, // token'ı header'a ekle
-      },
-    });
-    if (!res.ok) throw new Error("Ürünler alınamadı");
-    const data = await res.json();
-    return data.products;
-  };
-
   const token = user?.token;
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["products",user?.id],
-    queryFn: () => fetchProducts(),
+    queryFn: () => getSellerProducts(token!),
     enabled: !!token,
   });
 
