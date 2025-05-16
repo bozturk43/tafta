@@ -1,6 +1,6 @@
 {
   "name": "tafta",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,6 +14,7 @@
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
     "@tanstack/react-query": "^5.76.1",
+    "@tanstack/react-table": "^8.21.3",
     "firebase": "^11.7.3",
     "jose": "^6.0.11",
     "next": "15.3.2",

@@ -37,10 +37,24 @@ export async function GET(req: NextRequest) {
     const q = query(productsRef, where("producerId", "==", payload.id));
     const querySnapshot = await getDocs(q);
 
-    const products = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const products = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      const date = data.createdAt
+        ? new Date(data.createdAt.seconds * 1000 + data.createdAt.nanoseconds / 1_000_000)
+        : null;
+
+      const formattedDate = date
+        ? `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}.${date.getFullYear()}`
+        : null;
+
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: formattedDate,
+      };
+    });
 
     return NextResponse.json({ products });
 

@@ -93,7 +93,7 @@ export default function ProductFormPage() {
         Array.from(data.images as File[]).forEach((file: File, i: number) => {
             formData.append("images", file, i === 0 ? "thumbnail.jpg" : file.name);
         });
-        formData.append("productId",productId);
+        formData.append("productId", productId);
         await fetch(`http://localhost:3000/api/seller/upload-product-images`, {
             method: "POST",
             headers: {
@@ -217,8 +217,13 @@ export default function ProductFormPage() {
                         multiple
                         accept="image/*"
                         onChange={onFilesChange}
-                        className="w-full"
+                        className="hidden"
                     />
+                    <button
+                        type="button"
+                        onClick={() => document.getElementById('images')?.click()}
+                        className="inline-flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                    >Fotograf Ekle</button>
                     {errors.images && (
                         <p className="text-red-600 mt-1 text-sm">
                             {errors.images?.message && errors.images.message.toString()}
