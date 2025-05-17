@@ -1,5 +1,4 @@
 "use client";
-
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/context/authContext";
 import { getSellerProducts } from "@/app/lib/api/getSellerProducts";
@@ -13,11 +12,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from "next/navigation";
+import { useQueryClient } from '@tanstack/react-query';
+
 
 
 export default function SellerDashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const token = user?.token;
 
   const { data: products, isLoading, error } = useQuery<Product[]>({
@@ -25,12 +27,12 @@ export default function SellerDashboardPage() {
     queryFn: () => getSellerProducts(token!),
     enabled: !!token,
   });
-
   const { data: attributes } = useQuery({
     queryKey: ["attributes", user?.id],
     queryFn: () => getAttributes(token!),
     enabled: !!token,
   });
+  console.log(attributes);
 
   const columns = useMemo<ColumnDef<Product>[]>(
     () => [
@@ -76,13 +78,35 @@ export default function SellerDashboardPage() {
           const product = row.original;
 
           const handleUpdate = () => {
-            console.log("Güncelle:", product.id);
+            console.log("Güncelle:", row.original);
+            router.push(`product-form?id=${row.original.id}`)
             // yönlendirme veya işlem
           };
 
-          const handleDelete = () => {
-            console.log("Sil:", product.id);
-            // silme işlemi
+          const handleDelete = async (productId: string) => {
+            if (!confirm('Bu ürünü silmek istediğinize emin misiniz?')) return;
+
+            try {
+              const response = await fetch(`/api/seller/delete-product?id=${productId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Authorization': `Bearer ${user?.token}`
+                }
+              });
+
+              if (!response.ok) {
+                throw new Error('Silme işlemi başarısız');
+              }
+              // Başarılı silme sonrası
+              alert('Ürün başarıyla silindi');
+              queryClient.invalidateQueries({
+                queryKey: ['products', user?.id]
+              });
+              router.refresh(); // Listeyi güncelle
+            } catch (error) {
+              console.error('Silme hatası:', error);
+              alert('Ürün silinirken bir hata oluştu');
+            }
           };
 
           return (
@@ -90,7 +114,7 @@ export default function SellerDashboardPage() {
               <IconButton color="primary" size="small" onClick={handleUpdate} aria-label="güncelle">
                 <EditIcon />
               </IconButton>
-              <IconButton color="error" size="small" onClick={handleDelete} aria-label="sil">
+              <IconButton color="error" size="small" onClick={()=>handleDelete(row.original.id)} aria-label="sil">
                 <DeleteIcon />
               </IconButton>
             </Stack>

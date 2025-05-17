@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/app/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, storage } from "@/app/lib/firebase";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
+
 
 
 // JWT secret key (env’den çekmelisin)
@@ -37,24 +39,43 @@ export async function GET(req: NextRequest) {
     const q = query(productsRef, where("producerId", "==", payload.id));
     const querySnapshot = await getDocs(q);
 
-    const products = querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      const date = data.createdAt
-        ? new Date(data.createdAt.seconds * 1000 + data.createdAt.nanoseconds / 1_000_000)
-        : null;
+    const products = await Promise.all(
+      querySnapshot.docs.map(async (doc) => {
+        const data = doc.data();
+        const productId = doc.id;
 
-      const formattedDate = date
-        ? `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}.${date.getFullYear()}`
-        : null;
+        // Fotoğrafları al
+        const folderRef = ref(storage, `product_images/${productId}`);
+        let images: string[] = [];
 
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: formattedDate,
-      };
-    });
+        try {
+          const listResult = await listAll(folderRef);
+          const urlPromises = listResult.items.map((itemRef) => getDownloadURL(itemRef));
+          images = await Promise.all(urlPromises);
+        } catch (err) {
+          // klasör yoksa veya erişilemiyorsa boş array bırak
+          images = [];
+        }
+
+        const date = data.createdAt
+          ? new Date(data.createdAt.seconds * 1000 + data.createdAt.nanoseconds / 1_000_000)
+          : null;
+
+        const formattedDate = date
+          ? `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}.${date.getFullYear()}`
+          : null;
+
+        return {
+          id: productId,
+          ...data,
+          createdAt: formattedDate,
+          images,
+        };
+      })
+    );
+
 
     return NextResponse.json({ products });
 
