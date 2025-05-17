@@ -75,7 +75,6 @@ export default function SellerDashboardPage() {
         id: "actions",
         header: "İşlemler",
         cell: ({ row }) => {
-          const product = row.original;
 
           const handleUpdate = () => {
             console.log("Güncelle:", row.original);

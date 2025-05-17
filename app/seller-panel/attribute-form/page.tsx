@@ -35,7 +35,7 @@ export default function AttributeForm() {
 
     const loadAttribute = async () => {
       try {
-        const res = await fetch(`/api/seller/get-attribute?id=${attributeId}`, {
+        const res = await fetch(`/api/seller/get-attribute-by-id?id=${attributeId}`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         const data = await res.json();

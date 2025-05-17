@@ -1,4 +1,5 @@
 export interface Attribute {
+    id:string,
     name: string,
     options: AtrributeOption[],
     createdAt?: { seconds: number; nanoseconds: number } | Date;
