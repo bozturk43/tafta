@@ -27,10 +27,10 @@ export async function POST(request: Request) {
       message: 'Görseller başarıyla güncellendi'
     });
     
-  } catch (error: any) {
+  } catch (error) {
     console.error('Görsel güncelleme hatası:', error);
     return NextResponse.json(
-      { error: 'Görseller güncellenirken hata oluştu', details: error.message },
+      { error: 'Görseller güncellenirken hata oluştu', details: error },
       { status: 500 }
     );
   }

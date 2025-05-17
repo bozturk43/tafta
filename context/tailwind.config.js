@@ -6,7 +6,13 @@ module.exports = {
       "./pages/**/*.{js,ts,jsx,tsx}",  // Eğer pages dizin varsa
     ],
     theme: {
-      extend: {},
+      extend: {
+      fontFamily: {
+        sans: ['var(--font-roboto-condensed)', 'sans-serif'],
+        // Özel bir class eklemek isterseniz:
+        condensed: ['var(--font-roboto-condensed)', 'sans-serif'],
+      },
+    },
     },
     plugins: [],
   };

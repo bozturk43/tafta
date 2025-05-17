@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Tabs, Tab, Box, TextField, Button, Typography } from "@mui/material";
+import { Tabs, Tab, Box, TextField, Button, Typography, Link, DialogContent, Dialog, Divider } from "@mui/material";
 import { useAuth, UserType } from "@/context/authContext";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 
 export default function LoginPage() {
@@ -14,6 +15,10 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const { login } = useAuth();
   const router = useRouter();
@@ -29,7 +34,7 @@ export default function LoginPage() {
     }));
   };
 
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -51,11 +56,11 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
-      const userObject:UserType = {
-        id:data.user.id,
-        type:data.user.type,
-        email:data.user.email,
-        token:data.token
+      const userObject: UserType = {
+        id: data.user.id,
+        type: data.user.type,
+        email: data.user.email,
+        token: data.token
       }
       login(userObject);
       localStorage.setItem("token", data.token);
@@ -72,6 +77,9 @@ export default function LoginPage() {
       className="max-w-md mx-auto mt-20 p-6 border rounded shadow"
       component="main"
     >
+      <div className="flex w-full justify-center">
+        <Image src="/tafta-logo.png" alt="tafta-logo" width={100} height={50}></Image>
+      </div>
       <Tabs
         value={tab}
         onChange={handleTabChange}
@@ -111,9 +119,72 @@ export default function LoginPage() {
         )}
 
         <Button type="submit" variant="contained" fullWidth>
-        {loading ? "Giriş yapılıyor..." : tab === 0 ? "Müşteri Girişi" : "Satıcı Girişi"}
+          {loading ? "Giriş yapılıyor..." : tab === 0 ? "Müşteri Girişi" : "Satıcı Girişi"}
         </Button>
       </form>
+      <div className="my-2">
+        <Typography fontSize={12}>
+          Henüz bir hesabınız yok mu?{" "}
+          <span onClick={handleOpen} className="text-blue-500 cursor-pointer underline">
+            Kayıt ol.
+          </span>
+        </Typography>
+        <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+          <DialogContent className="p-0">
+            <div className="flex flex-row h-full">
+              {/* Sol taraf */}
+              <div className="flex-1 flex flex-col items-center justify-center p-6">
+                <Typography variant="h5" className="mt-4 text-center" fontWeight="bold">
+                  Sanat Eserlerine Ulaş
+                </Typography>
+                <Image
+                  src="/customer-signup.jpg" // public klasörüne bir resim koy
+                  alt="Customer Visual"
+                  width={400}
+                  height={400}
+                />
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className="mt-4"
+                  fullWidth
+                  component={Link}
+                  href="/signup?type=customer"
+                >
+                  Müşteri Olarak Kayıt Ol
+                </Button>
+              </div>
+
+              {/* Divider */}
+              <Divider orientation="vertical" flexItem />
+
+              {/* Sağ taraf */}
+              <div className="flex-1 flex flex-col items-center justify-center p-6">
+                <Typography variant="h5" className="text-center" fontWeight="bold">
+                  Sanatını Sergile
+                </Typography>
+                <Image
+                  src="/seller-signup.jpg" // public klasörüne bir resim koy
+                  alt="Seller Visual"
+                  width={400}
+                  height={400}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="mt-4"
+                  fullWidth
+                  component={Link}
+                  href="/signup?type=producer"
+                >
+                  Üretici Olarak Kayıt Ol
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
     </Box>
   );
 }

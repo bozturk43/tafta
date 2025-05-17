@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       );
       payload = jwtPayload;
     } catch (err) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      return NextResponse.json({ error: `Invalid token ${err}` }, { status: 401 });
     }
 
     // role kontrolü
@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
           images = await Promise.all(urlPromises);
         } catch (err) {
           // klasör yoksa veya erişilemiyorsa boş array bırak
+          console.log(err);
           images = [];
         }
 

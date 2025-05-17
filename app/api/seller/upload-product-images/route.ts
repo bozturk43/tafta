@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Eksik veri" }, { status: 400 });
     }
 
-    const uploadResults = [];
+    const uploadResults:string[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];

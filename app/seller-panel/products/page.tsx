@@ -14,8 +14,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from "next/navigation";
 import { useQueryClient } from '@tanstack/react-query';
 
-
-
 export default function SellerDashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
@@ -32,7 +30,6 @@ export default function SellerDashboardPage() {
     queryFn: () => getAttributes(token!),
     enabled: !!token,
   });
-  console.log(attributes);
 
   const columns = useMemo<ColumnDef<Product>[]>(
     () => [

@@ -1,37 +1,58 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import Link from "next/link";
+import MenuIcon from '@mui/icons-material/Menu';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { IconButton } from "@mui/material";
 
 type Props = {
   children: ReactNode;
 };
 
 export default function SellerPanelLayout({ children }: Props) {
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-1">
         {/* Sol menü */}
-        <nav className="w-64 bg-gray-100 border-r p-4">
+        <nav
+          className={`transition-all duration-300 ${isMenuOpen ? "w-64" : "w-16"
+            } bg-gray-100 border-r p-4`}
+        >
+          {/* Menü Aç/Kapa Butonu */}
+          <div className={`flex w-full ${isMenuOpen ? "justify-end":"justify-center" }`}>
+            <IconButton
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              sx={{}}
+            >
+              {isMenuOpen ? (
+                <CancelIcon fontSize="medium" color={"primary"} />
+              ) : (
+                <MenuIcon fontSize="medium" color={"primary"} />
+              )}
+            </IconButton>
+          </div>
           <ul className="space-y-4">
-          <li>
+            <li className={`${!isMenuOpen ? "text-center":""}`}>
               <Link href="/seller-panel">
-                  Dashboard
+                <span>{isMenuOpen ? "🏠 Dashboard" : "🏠"}</span>
               </Link>
             </li>
-            <li>
+            <li className={`${!isMenuOpen ? "text-center":""}`}>
               <Link href="/seller-panel/products">
-                  Ürün Yönetimi
+                <span>{isMenuOpen ? "📦 Ürün Yönetimi" : "📦"}</span>
               </Link>
             </li>
-            <li>
+            <li className={`${!isMenuOpen ? "text-center":""}`}>
               <Link href="/seller-panel/attributes">
-                  Nitelikler
+                <span>{isMenuOpen ? "📝 Nitelikler" : "📝"}</span>
               </Link>
             </li>
-            <li>
+            <li className={`${!isMenuOpen ? "text-center":""}`}>
               <Link href="/seller-panel/seller-info">
-                  Satıcı Bilgileri
+                <span>{isMenuOpen ? "👤 Satıcı Bilgileri" : "👤"}</span>
               </Link>
             </li>
           </ul>

@@ -6,14 +6,13 @@ import {
     AppBar,
     Toolbar,
     IconButton,
-    Typography,
     Button,
     Menu,
     MenuItem,
   } from "@mui/material";import { AccountCircle } from "@mui/icons-material";
-import LoginIcon from "@mui/icons-material/Login";
 import { useState,MouseEvent  } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -39,9 +38,7 @@ export default function Header() {
         {/* Sol Logo */}
         <div className="flex items-center space-x-2">
           <Link href="/">
-            <Typography variant="h6" className="cursor-pointer font-bold">
-              MyMarket
-            </Typography>
+            <Image src="/tafta-logo.png" width={80} height={40} alt="tafta-logo"/>
           </Link>
         </div>
 
@@ -104,9 +101,12 @@ export default function Header() {
             </>
           ) : (
             <Link href="/login">
-              <IconButton color="inherit">
+              {/* <IconButton color="inherit">
                 <LoginIcon />
-              </IconButton>
+              </IconButton> */}
+              <Button color="primary" variant="contained">
+                Giriş Yap
+              </Button>
             </Link>
           )}
         </div>

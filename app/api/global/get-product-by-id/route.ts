@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { doc, getDoc } from "firebase/firestore";
 import { db, storage } from "@/app/lib/firebase";
 
@@ -36,7 +36,7 @@ const storageRef = ref(storage, `product_images/${id}`);
       id: productDoc.id,
       images: imageUrls,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Hata:', error);
     return NextResponse.json({ error: 'Sunucu hatası' }, { status: 500 });
   }

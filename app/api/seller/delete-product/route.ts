@@ -28,10 +28,10 @@ export async function DELETE(request: Request) {
     }
 
     return NextResponse.json({ success: true, message: 'Ürün başarıyla silindi' });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Silme hatası:', error);
     return NextResponse.json(
-      { error: 'Ürün silinirken hata oluştu', details: error.message },
+      { error: 'Ürün silinirken hata oluştu', details: error },
       { status: 500 }
     );
   }

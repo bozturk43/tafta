@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db, storage } from '@/app/lib/firebase';
+import { db } from '@/app/lib/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
 export async function PUT(request: Request) {
@@ -29,10 +29,10 @@ export async function PUT(request: Request) {
       productId: id
     });
     
-  } catch (error: any) {
+  } catch (error) {
     console.error('Güncelleme hatası:', error);
     return NextResponse.json(
-      { error: 'Ürün güncellenirken hata oluştu', details: error.message },
+      { error: 'Ürün güncellenirken hata oluştu', details: error },
       { status: 500 }
     );
   }

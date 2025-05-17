@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 
 
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       );
       payload = jwtPayload;
     } catch (err) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      return NextResponse.json({ error: `Invalid token ${err}` }, { status: 401 });
     }
     // role kontrolü
     if (payload.type !== "producer") {
