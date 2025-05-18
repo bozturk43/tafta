@@ -8,9 +8,6 @@ const PUBLIC_PATHS = ['/login', '/producer-login', '/customer-login']
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value || ''
   const { pathname } = request.nextUrl
-
-  console.log("TOKEN MID",token)
-
   // Public sayfalar için KESİN EŞLEŞME kontrolü
   if (PUBLIC_PATHS.some(publicPath => pathname === publicPath)) {
     return NextResponse.next()
@@ -23,7 +20,6 @@ export async function middleware(request: NextRequest) {
 
   // Korumalı alanlar
   if (!token) {
-    console.log("TOKEN LOGIN DIRECT",token);
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
@@ -31,7 +27,6 @@ export async function middleware(request: NextRequest) {
     await jwtVerify(token, new TextEncoder().encode("supersecretkey"))
     return NextResponse.next()
   } catch (err) {
-    console.log("CATCH BLOGU")
     return NextResponse.redirect(new URL('/login', request.url))
   }
 }

@@ -74,7 +74,6 @@ export default function SellerDashboardPage() {
         cell: ({ row }) => {
 
           const handleUpdate = () => {
-            console.log("Güncelle:", row.original);
             router.push(`product-form?id=${row.original.id}`)
             // yönlendirme veya işlem
           };

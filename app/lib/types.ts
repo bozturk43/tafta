@@ -16,5 +16,8 @@ export interface Product {
     description: string,
     createdAt: string,
     basePrice: number,
-    attributes: { attributeId: string }[]
+    attributes: ProductAttribute[]
 }
+export interface ProductAttribute {
+  attributeId: string;
+};

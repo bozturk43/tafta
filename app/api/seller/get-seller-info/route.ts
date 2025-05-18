@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
       const avatarRef = ref(storage, `producer_profile_images/${producerId}`);
       avatarURL = await getDownloadURL(avatarRef);
     } catch (error) {
-      console.log(error,"Avatar image not found, using default");
+      console.error(error,"Avatar image not found, using default");
     }
 
     // 4. Verileri birleştir ve dön
