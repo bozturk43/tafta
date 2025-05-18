@@ -39,7 +39,6 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -63,7 +62,6 @@ export default function LoginPage() {
         token: data.token
       }
       login(userObject);
-      localStorage.setItem("token", data.token);
       router.push("/"); // Ana sayfaya yönlendir
     } catch (err: any) {
       setError(err.message);

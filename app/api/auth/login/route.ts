@@ -3,7 +3,7 @@ import { db } from "@/app/lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { SignJWT } from "jose";
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "supersecretkey"); 
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "supersecretkey");
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,11 +36,33 @@ export async function POST(req: NextRequest) {
       .setExpirationTime("2h")
       .sign(JWT_SECRET);
 
-    return NextResponse.json({
+    // Cookie ayarları
+    const cookieOptions = {
+      httpOnly: true,
+      sameSite: "lax" as const,
+      maxAge: 60 * 60 * 2, // 2 saat
+      path: "/",
+    };
+
+    const response = NextResponse.json({
       success: true,
       token,
       user: { id: userDoc.id, email: userData.email, type },
     });
+
+    response.cookies.set("token", token, cookieOptions)
+
+    response.cookies.set("user", JSON.stringify({
+      id: userDoc.id,
+      email: userData.email,
+      type,
+    }), {
+      ...cookieOptions,
+      httpOnly: false // Client-side'da okunabilir olması için
+    });
+
+    return response;
+
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });

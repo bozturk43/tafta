@@ -4,26 +4,36 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2', // Mavi tonu
-      light: '#42a5f5',
-      dark: '#1565c0',
+      main: '#2A3788',
+      light: '#F9F9F9',
+      dark: '#1C1D3A',
     },
     secondary: {
-      main: '#9c27b0', // Mor tonu
-      light: '#ba68c8',
-      dark: '#7b1fa2',
+      main: '#97C11F',
+      light: '#F0D300',
+      dark: '#E42528',
     },
   },
   typography: {
     fontFamily: [
-      'var(--font-roboto-condensed)',
+      'var(--font-poppins)', // Next.js'de tanımlı Poppins font değişkeni
       'Arial',
-      'sans-serif',
+      'sans-serif'
     ].join(','),
-    // İsteğe bağlı: Başlık stillerini özelleştirin
+
+    // İsteğe bağlı başlık stilleri (Poppins'e uygun)
     h1: {
       fontWeight: 700,
       letterSpacing: '-0.015em',
+      fontFamily: 'var(--font-poppins)',
+    },
+    h2: {
+      fontWeight: 600,
+      fontFamily: 'var(--font-poppins)',
+    },
+    h3: {
+      fontWeight: 500,
+      fontFamily: 'var(--font-poppins)',
     },
   },
   components: {

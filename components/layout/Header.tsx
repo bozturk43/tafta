@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useAuth } from "@/context/authContext";
 import {
     AppBar,
@@ -9,6 +8,7 @@ import {
     Button,
     Menu,
     MenuItem,
+    Link,
   } from "@mui/material";import { AccountCircle } from "@mui/icons-material";
 import { useState,MouseEvent  } from "react";
 import { useRouter } from "next/navigation";
@@ -43,15 +43,18 @@ export default function Header() {
         </div>
 
         {/* Orta Menü */}
-        <div className="space-x-6 hidden md:flex">
-          <Link href="/">
-            <Button variant="text" color="inherit">Ana Sayfa</Button>
+        <div className="flex gap-4 hidden md:flex">
+          <Link href="/" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
+            Ana Sayfa
           </Link>
-          <Link href="/producers">
-            <Button variant="text" color="inherit">Üreticiler</Button>
+          <Link href="/workshops" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
+            Atölyeler
           </Link>
-          <Link href="/store">
-            <Button variant="text" color="inherit">Mağaza</Button>
+          <Link href="/about-us" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
+            Hikayemiz
+          </Link>
+          <Link href="/contact" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
+            İletisim
           </Link>
         </div>
 
@@ -71,12 +74,12 @@ export default function Header() {
                 {user.type === "producer" ? (
                   <>
                     <MenuItem onClick={handleMenuClose}>
-                      <Link href="/seller-panel" legacyBehavior>
+                      <Link href="/seller-panel">
                         <a className="w-full block no-underline text-inherit">Satıcı Paneli</a>
                       </Link>
                     </MenuItem>
                     <MenuItem onClick={handleMenuClose}>
-                      <Link href="/messages" legacyBehavior>
+                      <Link href="/messages">
                         <a className="w-full block no-underline text-inherit">Mesajlarım</a>
                       </Link>
                     </MenuItem>
@@ -85,12 +88,12 @@ export default function Header() {
                 ) : (
                   <>
                     <MenuItem onClick={handleMenuClose}>
-                      <Link href="/account" legacyBehavior>
+                      <Link href="/account">
                         <a className="w-full block no-underline text-inherit">Hesabım</a>
                       </Link>
                     </MenuItem>
                     <MenuItem onClick={handleMenuClose}>
-                      <Link href="/messages" legacyBehavior>
+                      <Link href="/messages">
                         <a className="w-full block no-underline text-inherit">Mesajlarım</a>
                       </Link>
                     </MenuItem>
