@@ -49,6 +49,7 @@ export default function ProductDetailInner({ productId }: { productId: string })
   });
 
   const attributesWatch = watch("attributes");
+  console.error(errors);
 
   useEffect(() => {
     if (productData) {

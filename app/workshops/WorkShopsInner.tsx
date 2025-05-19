@@ -7,12 +7,6 @@ import { getWorkshopsData } from "../lib/api/getWorkShopsData";
 
 
 export default function WorkShopsInner() {
-    const masters = [
-        { name: "Onur & Emre", title: "Seramik Ustaları" },
-        { name: "Ayşegül", title: "Dikiş Ustası" },
-        { name: "Hümeyra", title: "Punch Ustası" },
-        { name: "Ahsen", title: "Çanta Ustası" },
-    ];
 
     const { data: workshopsData, isLoading: workShopsIsLoading, error: workShopsError } = useQuery({
         queryKey: ["workshopData"],
