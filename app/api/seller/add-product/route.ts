@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
       ...body,
       producerId: payload.id,
       createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
     };
 
     const docRef = await addDoc(collection(db, "products"), productData);

@@ -7,13 +7,17 @@ import { getProducerProducts } from "@/app/lib/api/getProducerProducts";
 import { calculatePriceRange } from "@/app/lib/helpers/calculatePriceRange";
 import { Attribute } from "@/app/lib/types";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function ProducerPageInner({ producerId }: { producerId: string }) {
+
+    const router = useRouter();
 
     const { data: attributesData, isLoading: attributesLoading, error: attributeError } = useQuery({
         queryKey: ["attributes"],
         queryFn: () => getAttributesWoToken(producerId!),
         enabled: !!producerId,
+        staleTime:0,
         select: (data) => transformAttributesToArray(data) // Veriyi otomatik dönüştür
     });
 
@@ -21,6 +25,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
         queryKey: ["pageData"],
         queryFn: () => getProducerProducts(producerId!),
         enabled: !!producerId,
+        staleTime:0
     });
 
     if (attributesLoading || pageDataLoading) {
@@ -94,7 +99,8 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                         {pageData.products.map((product, idx) => (
                             <div
                                 key={idx}
-                                className="bg-blue-50 rounded-xl shadow p-4 flex flex-col items-center"
+                                className="bg-blue-50 rounded-xl shadow p-4 flex flex-col items-center cursor-pointer"
+                                onClick={()=>router.push(`/product/${product.id}`)}
                             >
                                 <Image
                                     src={product.images.length > 0 ? product.images[0] : "/place-holder-image.png"}

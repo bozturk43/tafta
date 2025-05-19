@@ -214,6 +214,24 @@ export default function ProductFormInner() {
                     )}
                 </div>
 
+                {/* Ürün Adı */}
+                <div>
+                    <label className="block mb-1 font-medium" htmlFor="averageTime">
+                        Ortalama Tamamlama Süresi <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        id="averageTime"
+                        placeholder="Örn: 1 hafta "
+                        type="text"
+                        {...register("averageTime", { required: "Ortalama Süre Gerekl" })}
+                        className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring ${errors.name ? "border-red-500 ring-red-300" : "border-gray-300"
+                            }`}
+                    />
+                    {errors.name && (
+                        <p className="text-red-600 mt-1 text-sm">{errors.name?.message && errors.name.message.toString()}</p>
+                    )}
+                </div>
+
                 {/* Açıklama */}
                 <div>
                     <label className="block mb-1 font-medium" htmlFor="description">

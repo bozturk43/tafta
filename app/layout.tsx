@@ -10,6 +10,7 @@ import { theme } from './theme';
 import { Poppins } from 'next/font/google';
 
 import './globals.css';
+import { CartProvider } from "@/context/cartContetx";
 
 
 const poppins = Poppins({
@@ -25,11 +26,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
+            <CartProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <Header />
               {children}
               </ThemeProvider>
+              </CartProvider>
           </AuthProvider>
         </QueryClientProvider>
       </body>

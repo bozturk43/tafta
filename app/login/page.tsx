@@ -21,7 +21,7 @@ export default function LoginPage() {
   const handleClose = () => setOpen(false);
 
   const { login } = useAuth();
-  const router = useRouter();
+    const router = useRouter();
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
@@ -148,7 +148,7 @@ export default function LoginPage() {
                   className="mt-4"
                   fullWidth
                   component={Link}
-                  href="/signup?type=customer"
+                  href="/register/customer"
                 >
                   Müşteri Olarak Kayıt Ol
                 </Button>
@@ -174,7 +174,7 @@ export default function LoginPage() {
                   className="mt-4"
                   fullWidth
                   component={Link}
-                  href="/signup?type=producer"
+                  href="/register/producer"
                 >
                   Üretici Olarak Kayıt Ol
                 </Button>

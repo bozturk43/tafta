@@ -2,23 +2,30 @@
 
 import { useAuth } from "@/context/authContext";
 import {
-    AppBar,
-    Toolbar,
-    IconButton,
-    Button,
-    Menu,
-    MenuItem,
-    Link,
-  } from "@mui/material";import { AccountCircle } from "@mui/icons-material";
-import { useState,MouseEvent  } from "react";
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
+  Link,
+  Badge,
+} from "@mui/material"; import { AccountCircle } from "@mui/icons-material";
+import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useCart } from "@/context/cartContetx"; // cart context yolunu doğru gir
+
+
 
 export default function Header() {
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useRouter();
-  
+  const { cartItems } = useCart();
+  const totalQuantity = cartItems.length;
+
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -38,7 +45,7 @@ export default function Header() {
         {/* Sol Logo */}
         <div className="flex items-center space-x-2">
           <Link href="/">
-            <Image src="/tafta-logo.png" width={80} height={40} alt="tafta-logo"/>
+            <Image src="/tafta-logo.png" width={80} height={40} alt="tafta-logo" />
           </Link>
         </div>
 
@@ -59,7 +66,15 @@ export default function Header() {
         </div>
 
         {/* Sağ Login / User */}
-        <div>
+        <div className="flex flex-row gap-8">
+          <IconButton
+            color="inherit"
+            href="/cart"
+            hidden={Boolean(user && user.type === "producer")}>
+            <Badge badgeContent={totalQuantity} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
           {user ? (
             <>
               <IconButton color="inherit" onClick={handleMenuOpen}>

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/app/lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { average, doc, updateDoc } from 'firebase/firestore';
 
 export async function PUT(request: Request) {
   try {
@@ -20,6 +20,7 @@ export async function PUT(request: Request) {
       basePrice: requestData.basePrice,
       description: requestData.description,
       attributes: requestData.attributes || [],
+      averageTime:requestData.averageTime,
       updatedAt: new Date().toISOString()
     });
 
