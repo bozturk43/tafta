@@ -1,18 +1,29 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogContent, IconButton } from "@mui/material";
+import { Button, Dialog, DialogContent, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Table } from "@/components/Table";
 import { useAuth } from "@/context/authContext";
+import Image from "next/image";
+import MessageDialog from "@/components/MessageDialog";
+
+type CustomRequestCustomer = {
+    avatar: string;
+    email: string;
+    name: string;
+    phone: string;
+}
 
 type CustomRequest = {
     id: string;
+    customer: CustomRequestCustomer;
     description: string;
     status: "pending" | "accepted" | "rejected" | "completed";
     createdAt: string;
     images: string[];
 };
+
 
 const statusOptions = ["pending", "accepted", "rejected", "completed"] as const;
 
@@ -55,9 +66,13 @@ export default function CustomOrderInner() {
     }, []);
 
     const handleStatusChange = async (id: string, newStatus: CustomRequest["status"]) => {
-        const res = await fetch(`/api/custom-request/${id}/status`, {
+        const res = await fetch(`/api/custom-request/${id}/change-status`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+
+            },
             body: JSON.stringify({ status: newStatus }),
         });
 
@@ -72,6 +87,32 @@ export default function CustomOrderInner() {
 
     const columns = [
         {
+            header: "Sipariş Oluşturan",
+            accessorKey: "customer",
+            cell: ({ row }: any) => (
+                <div className="flex flex-row items-center gap-4">
+                    <Image
+                        width={40} height={40}
+                        alt={"customer_image"}
+                        src={row.original.customer.avatar}
+                        className="rounded-full"
+                    />
+                    <div className="flex flex-col">
+                        <Typography variant="body2" fontWeight={900}>
+                            {row.original.customer.name}
+                        </Typography>
+                        <p className="text-[12px]">
+                            {row.original.customer.email}
+                        </p>
+                        <p className="text-[12px]">
+                            {row.original.customer.phone}
+                        </p>
+                    </div>
+
+                </div>
+            ),
+        },
+        {
             header: "Açıklama",
             accessorKey: "description",
         },
@@ -81,8 +122,7 @@ export default function CustomOrderInner() {
             cell: ({ row }: any) => (
                 <select
                     value={row.original.status}
-                    onChange={(e) => handleStatusChange(row.original.id, "completed")}
-                >
+                    onChange={(e) => handleStatusChange(row.original.id, e.target.value as CustomRequest["status"])}>
                     {statusOptions.map((status) => (
                         <option key={status} value={status}>
                             {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -118,19 +158,27 @@ export default function CustomOrderInner() {
             ),
         },
         {
-            header: "Oluşturulma Tarihi",
+            header: "Oluşturma Tarihi",
             accessorKey: "createdAt",
-            cell: ({ row }: any) =>
-                new Date(row.original.createdAt).toLocaleString(),
+            cell: ({ row }: any) => (
+                <p className="text-[12px]">
+                    {new Date(row.original.createdAt).toLocaleString()}
+                </p>
+            )
         },
+        {
+            header: "Aksiyonlar",
+            cell: ({ row }) => (
+                <ActionCell row={row} />
+            )
+        }
     ];
 
     if (loading) return <div>Yükleniyor...</div>;
 
     return (
-        <>
+        <div className="p-12">
             <Table columns={columns} data={data} />
-
             <Dialog
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}
@@ -159,6 +207,24 @@ export default function CustomOrderInner() {
                     )}
                 </DialogContent>
             </Dialog>
-        </>
+        </div>
     );
 }
+
+const ActionCell = ({ row }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className="flex items-center justify-center">
+            <Button sx={{fontSize:"10px"}} variant="contained" onClick={() => setIsOpen(true)}>Mesaj Gönder</Button>
+            <MessageDialog
+                open={isOpen}
+                recieverImage={row.original.customer.avatar}
+                recieverName={row.original.customer.name}
+                onClose={() => setIsOpen(false)}
+                receiverId={row.original.customerId}
+            />
+        </div>
+    );
+};
+
