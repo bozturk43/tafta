@@ -33,10 +33,20 @@ export default function Header() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+
+    try {
+    await fetch("/api/auth/logout", {
+      method: "GET",
+      credentials: "include", // Cookie'lerin iletilmesini sağlar
+    });
+    // Kullanıcıyı giriş sayfasına yönlendir
     handleMenuClose();
-    router.push("/")
+    logout();
+    router.push("/");
+  } catch (error) {
+    console.error("Logout hatası:", error);
+  }
   };
 
   return (

@@ -8,16 +8,23 @@ import { calculatePriceRange } from "@/app/lib/helpers/calculatePriceRange";
 import { Attribute } from "@/app/lib/types";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/authContext";
+import { useEffect, useState } from "react";
+import MessageDialog from "@/components/MessageDialog";
 
 export default function ProducerPageInner({ producerId }: { producerId: string }) {
 
     const router = useRouter();
+    const { user } = useAuth();
+    const [open, setOpen] = useState(false);
+
+
 
     const { data: attributesData, isLoading: attributesLoading, error: attributeError } = useQuery({
         queryKey: ["attributes"],
         queryFn: () => getAttributesWoToken(producerId!),
         enabled: !!producerId,
-        staleTime:0,
+        staleTime: 0,
         select: (data) => transformAttributesToArray(data) // Veriyi otomatik dönüştür
     });
 
@@ -25,7 +32,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
         queryKey: ["pageData"],
         queryFn: () => getProducerProducts(producerId!),
         enabled: !!producerId,
-        staleTime:0
+        staleTime: 0
     });
 
     if (attributesLoading || pageDataLoading) {
@@ -33,7 +40,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
             <h1>Sayfa Yükleniyor.</h1>
         )
     }
-      if (attributeError || pageDataError) return <div>Hata: Veriler Alınırken bir sorun ile karşılaşıldı.</div>;
+    if (attributeError || pageDataError) return <div>Hata: Veriler Alınırken bir sorun ile karşılaşıldı.</div>;
 
 
     return (
@@ -65,30 +72,30 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
 
                         {/* Butonlar */}
                         <div className="mt-6 flex flex-col gap-4 w-full">
-                            <Button
-                                variant="contained"
-                                sx={{backgroundColor:"#E42528",fontSize:"9px",borderRadius:50}}
-                                startIcon={
-                                    <Image src="/4.png" alt="" width={80} height={80} />
-                                }>
-                                Ürünün kalbine bir yolculuk izlemek istersen, tıkla.                            
-                            </Button>
-                            <Button
-                                variant="contained"
-                                sx={{backgroundColor:"#97C11F",fontSize:"9px",borderRadius:50}}
-                                startIcon={
+                            <div className="flex flex-row bg-blue-50 h-[40px] rounded-lg">
+                                <div className="w-1/4">
+                                    <Image src="/4.png" alt="" width={40} height={40} />
+                                </div>
+                                <Button className="w-3/4" sx={{ fontSize: "8px", color: "red" }}>
+                                    Ürünün kalbine bir yolculuk izlemek istersen, tıkla.
+                                </Button>
+                            </div>
+                            <div className="flex flex-row bg-[#97c11f] h-[40px] rounded-lg">
+                                <div className="w-1/4">
                                     <Image src="/1.png" alt="" width={40} height={40} />
-                                }>
-                                Yeni Bir Fikrin mi Var? Özel Sipariş İste                            
-                            </Button>
-                            <Button
-                                variant="contained"
-                                sx={{backgroundColor:"#F9F9F9",fontSize:"9px",borderRadius:50,color:"black"}}
-                                startIcon={
+                                </div>
+                                <Button className="w-3/4" sx={{ fontSize: "9px", color: "white" }} disabled={!user}>
+                                    Yeni Bir Fikrin mi Var? Özel Sipariş İste
+                                </Button>
+                            </div>
+                            <div className="flex flex-row bg-[#F9F9F9] h-[40px] border-2 border-[#97c11f] rounded-lg">
+                                <div className="w-1/4">
                                     <Image src="/2.png" alt="" width={40} height={40} />
-                                }>
-                                Usta ile İletişime Geç
-                            </Button>
+                                </div>
+                                <Button className="w-3/4" sx={{ fontSize: "9px", color: "#97c11f" }} disabled={!user} onClick={() => setOpen(true)}>
+                                    Usta ile İletişime Geç
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,7 +107,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                             <div
                                 key={idx}
                                 className="bg-blue-50 rounded-xl shadow p-4 flex flex-col items-center cursor-pointer"
-                                onClick={()=>router.push(`/product/${product.id}`)}
+                                onClick={() => router.push(`/product/${product.id}`)}
                             >
                                 <Image
                                     src={product.images.length > 0 ? product.images[0] : "/place-holder-image.png"}
@@ -132,6 +139,13 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                     </div>
                 </div>
             </div>
+            <MessageDialog
+                open={open}
+                recieverImage={pageData.producer.avatar}
+                recieverName={pageData.producer.name}
+                onClose={() => setOpen(false)}
+                receiverId={pageData.producer.id}
+            />
         </div>
     );
 }
