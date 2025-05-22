@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
     const token = authHeader.replace("Bearer ", "");
     let payload;
-
+    console.log(token);
     try {
       const { payload: jwtPayload } = await jwtVerify(
         token,

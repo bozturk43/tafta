@@ -11,12 +11,15 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import { useEffect, useState } from "react";
 import MessageDialog from "@/components/MessageDialog";
+import CustomRequestDialog from "@/components/CustomRequestDialog";
 
 export default function ProducerPageInner({ producerId }: { producerId: string }) {
 
     const router = useRouter();
     const { user } = useAuth();
     const [open, setOpen] = useState(false);
+    const [customReqOpen, setcustomReqOpen] = useState(false);
+
 
 
 
@@ -84,7 +87,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                                 <div className="w-1/4">
                                     <Image src="/1.png" alt="" width={40} height={40} />
                                 </div>
-                                <Button className="w-3/4" sx={{ fontSize: "9px", color: "white" }} disabled={!user}>
+                                <Button className="w-3/4" sx={{ fontSize: "9px", color: "white" }} disabled={!user} onClick={()=>setcustomReqOpen(true)}>
                                     Yeni Bir Fikrin mi Var? Özel Sipariş İste
                                 </Button>
                             </div>
@@ -146,6 +149,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                 onClose={() => setOpen(false)}
                 receiverId={pageData.producer.id}
             />
+            <CustomRequestDialog open={customReqOpen} producerId={pageData.producer.id} onClose={()=>setcustomReqOpen(false)}/>
         </div>
     );
 }
