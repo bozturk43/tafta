@@ -1,16 +1,11 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/authContext";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAttributes } from "@/app/lib/api/getAttributes";
-import DeleteIcon from '@mui/icons-material/Delete';
 import {
     Avatar,
     Box,
     CircularProgress,
-    Divider,
     List,
     ListItem,
     ListItemAvatar,
@@ -23,6 +18,7 @@ import MessageDialog from "@/components/MessageDialog";
 type Conversation = {
     id: string;
     other: {
+        id: string;
         name: string;
         avatar: string | null;
     };
@@ -34,8 +30,9 @@ export default function MessagesInner() {
     const { user } = useAuth();
     const [loading, setLoading] = useState(true);
     const [conversations, setConversations] = useState<any[]>([]);
-    const router = useRouter();
-    const [isModalOpen,setIsModalOpen] = useState(false);
+    const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -83,9 +80,9 @@ export default function MessagesInner() {
                     </Typography>
                     <List>
                         {conversations.map((conv) => (
-                            <Box key={conv.id} sx={{ backgroundColor: "#a9a9a9", borderRadius: "20px" }}>
+                            <Box key={conv.id} sx={{ backgroundColor: "#a9a9a9", borderRadius: "20px", marginBottom: 2 }}>
                                 <ListItem disablePadding>
-                                    <ListItemButton onClick={() => setIsModalOpen(true)}>
+                                    <ListItemButton onClick={() => setSelectedConversation(conv)}>
 
                                         <ListItemAvatar>
                                             <Avatar src={conv.other.avatar || undefined}>
@@ -123,7 +120,15 @@ export default function MessagesInner() {
                     </List>
                 </Box>
             </Box>
-
+            {selectedConversation && (
+                <MessageDialog
+                    open={true}
+                    recieverImage={selectedConversation.other.avatar || ""}
+                    recieverName={selectedConversation.other.name}
+                    receiverId={selectedConversation.other.id || ""}
+                    onClose={() => setSelectedConversation(null)}
+                />
+            )}
         </>
     );
 }

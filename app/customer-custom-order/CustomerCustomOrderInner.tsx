@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogContent, IconButton, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogContent, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Table } from "@/components/Table";
 import { UserType } from "@/context/authContext";
 import Image from "next/image";
-import MessageDialog from "@/components/MessageDialog";
 
 type CustomRequestCustomer = {
     avatar: string;
@@ -25,9 +24,8 @@ type CustomRequest = {
 };
 
 
-const statusOptions = ["pending", "accepted", "rejected", "completed"] as const;
 
-export default function CustomOrderInner({user}:{user:UserType}) {
+export default function CustomerCustomOrderInner({user}:{user:UserType}) {
     const [data, setData] = useState<CustomRequest[]>([]);
     const [loading, setLoading] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
@@ -40,7 +38,7 @@ export default function CustomOrderInner({user}:{user:UserType}) {
             setLoading(true);
             try {
                 // Burada, JWT veya başka auth varsa onu header'a ekle
-                const res = await fetch("/api/custom-request/get-request", {
+                const res = await fetch("/api/customer-custom-request/get-request", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -64,29 +62,9 @@ export default function CustomOrderInner({user}:{user:UserType}) {
         fetchRequests();
     }, []);
 
-    const handleStatusChange = async (id: string, newStatus: CustomRequest["status"]) => {
-        const res = await fetch(`/api/custom-request/change-status?requestid=${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-
-            },
-            body: JSON.stringify({ status: newStatus }),
-        });
-
-        if (res.ok) {
-            setData((prev) =>
-                prev.map((req) => (req.id === id ? { ...req, status: newStatus } : req))
-            );
-        } else {
-            alert("Durum güncelleme başarısız.");
-        }
-    };
-
     const columns = [
         {
-            header: "Sipariş Oluşturan",
+            header: "Atölye",
             accessorKey: "customer",
             cell: ({ row }: any) => (
                 <div className="flex flex-row items-center gap-4">
@@ -119,15 +97,7 @@ export default function CustomOrderInner({user}:{user:UserType}) {
             header: "Durum",
             accessorKey: "status",
             cell: ({ row }: any) => (
-                <select
-                    value={row.original.status}
-                    onChange={(e) => handleStatusChange(row.original.id, e.target.value as CustomRequest["status"])}>
-                    {statusOptions.map((status) => (
-                        <option key={status} value={status}>
-                            {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </option>
-                    ))}
-                </select>
+                <div>{row.original.status}</div>
             ),
         },
         {
@@ -173,7 +143,7 @@ export default function CustomOrderInner({user}:{user:UserType}) {
         }
     ];
 
-    if (loading) return <div>Yükleniyor...</div>;
+    if (loading) return <CircularProgress/>;
 
     return (
         <div className="p-12">
@@ -212,17 +182,10 @@ export default function CustomOrderInner({user}:{user:UserType}) {
 
 const ActionCell = ({ row }) => {
     const [isOpen, setIsOpen] = useState(false);
-
+    console.log(isOpen,row);
     return (
         <div className="flex items-center justify-center">
-            <Button sx={{fontSize:"10px"}} variant="contained" onClick={() => setIsOpen(true)}>Mesaj Gönder</Button>
-            <MessageDialog
-                open={isOpen}
-                recieverImage={row.original.customer.avatar}
-                recieverName={row.original.customer.name}
-                onClose={() => setIsOpen(false)}
-                receiverId={row.original.customerId}
-            />
+            <Button sx={{fontSize:"10px"}} variant="contained" onClick={() => setIsOpen(true)}>İptal Et</Button>
         </div>
     );
 };

@@ -36,17 +36,17 @@ export default function Header() {
   const handleLogout = async () => {
 
     try {
-    await fetch("/api/auth/logout", {
-      method: "GET",
-      credentials: "include", // Cookie'lerin iletilmesini sağlar
-    });
-    // Kullanıcıyı giriş sayfasına yönlendir
-    handleMenuClose();
-    logout();
-    router.push("/");
-  } catch (error) {
-    console.error("Logout hatası:", error);
-  }
+      await fetch("/api/auth/logout", {
+        method: "GET",
+        credentials: "include", // Cookie'lerin iletilmesini sağlar
+      });
+      // Kullanıcıyı giriş sayfasına yönlendir
+      handleMenuClose();
+      logout();
+      router.push("/");
+    } catch (error) {
+      console.error("Logout hatası:", error);
+    }
   };
 
   return (
@@ -91,41 +91,54 @@ export default function Header() {
                 <AccountCircle />
               </IconButton>
 
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
-                {user.type === "producer" ? (
-                  <>
-                    <MenuItem onClick={handleMenuClose}>
-                      <Link href="/seller-panel">
-                        <a className="w-full block no-underline text-inherit">Satıcı Paneli</a>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
-                      <Link href="/messages">
-                        <a className="w-full block no-underline text-inherit">Mesajlarım</a>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleLogout}>Çıkış Yap</MenuItem>
-                  </>
-                ) : (
-                  <>
-                    <MenuItem onClick={handleMenuClose}>
-                      <Link href="/account">
-                        <a className="w-full block no-underline text-inherit">Hesabım</a>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
-                      <Link href="/messages">
-                        <a className="w-full block no-underline text-inherit">Mesajlarım</a>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleLogout}>Çıkış Yap</MenuItem>
-                  </>
-                )}
-              </Menu>
+
+              {user.type === "producer" ? (
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link href="/seller-panel" sx={{textDecoration:"none",color:"black"}}>
+                      Satıcı Paneli
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link href="/messages" sx={{textDecoration:"none",color:"black"}}>
+                     Mesajlarım
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose} href="/custom-orders">
+                    <Link href="/custom-orders" sx={{textDecoration:"none",color:"black"}}>
+                     Özel Siparişler
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Çıkış Yap</MenuItem>
+                </Menu>
+              ) : (
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link href="/account" sx={{textDecoration:"none",color:"black"}}>
+                      Hesabım
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link href="/messages"  sx={{textDecoration:"none",color:"black"}}>
+                      Mesajlarım
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link href="/customer-custom-order"  sx={{textDecoration:"none",color:"black"}}>
+                      Özel Siparişlerim
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Çıkış Yap</MenuItem>
+                </Menu>
+              )}
             </>
           ) : (
             <Link href="/login">
@@ -139,6 +152,6 @@ export default function Header() {
           )}
         </div>
       </Toolbar>
-    </AppBar>
+    </AppBar >
   );
 }

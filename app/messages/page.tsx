@@ -1,10 +1,10 @@
-// app/seller-panel/product-form/page.tsx
 import { Suspense } from 'react';
 import MessagesInner from './MessagesInner';
+import { CircularProgress } from '@mui/material';
 
 export default function ProducerMessagesPage() {
   return (
-    <Suspense fallback={<div>Loading messages ...</div>}>
+    <Suspense fallback={<CircularProgress/>}>
       <MessagesInner/>
     </Suspense>
   );

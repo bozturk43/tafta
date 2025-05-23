@@ -88,7 +88,7 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
         if (open) {
             fetchMessages();
         }
-    }, [open]);
+    }, [open,receiverId]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });

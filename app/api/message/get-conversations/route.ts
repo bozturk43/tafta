@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { doc,collection, query, where, getDocs, Timestamp, getDoc } from "firebase/firestore";
+import { doc,collection, query, where, getDocs, getDoc } from "firebase/firestore";
 import { db, storage } from "@/app/lib/firebase";
 import { jwtVerify } from "jose";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
             );
             payload = jwtPayload;
         } catch (err) {
-            return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
+            return NextResponse.json({ error: "Geçersiz token",err }, { status: 401 });
         }
 
         const currentUserId = payload.id as string;
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
                                 otherAvatar = await getDownloadURL(matchingFile);
                             }
                     } catch (err) {
-                        console.warn(`Profil resmi yüklenemedi: ${folderName}/${otherId}`);
+                        console.warn(`Profil resmi yüklenemedi: ${folderName}/${otherId}`,err);
                     }
                 }
 

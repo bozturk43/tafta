@@ -9,7 +9,7 @@ import { Attribute } from "@/app/lib/types";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MessageDialog from "@/components/MessageDialog";
 import CustomRequestDialog from "@/components/CustomRequestDialog";
 
@@ -19,8 +19,6 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
     const { user } = useAuth();
     const [open, setOpen] = useState(false);
     const [customReqOpen, setcustomReqOpen] = useState(false);
-
-
 
 
     const { data: attributesData, isLoading: attributesLoading, error: attributeError } = useQuery({
