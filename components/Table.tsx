@@ -1,4 +1,3 @@
-// components/Table.tsx
 "use client";
 
 import React from "react";
@@ -7,18 +6,23 @@ import {
   getCoreRowModel,
   flexRender,
   ColumnDef,
+  Row,
+  getExpandedRowModel,
 } from "@tanstack/react-table";
 
 interface TableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
+  renderSubComponent?: (row: Row<T>) => React.ReactNode;
 }
 
-export function Table<T>({ columns, data }: TableProps<T>) {
+export function Table<T>({ columns, data, renderSubComponent }: TableProps<T>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getRowCanExpand: () => !!renderSubComponent, // Her satır genişleyebilir mi?
   });
 
   return (
@@ -27,16 +31,8 @@ export function Table<T>({ columns, data }: TableProps<T>) {
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="bg-gray-100">
             {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                className="border border-gray-300 p-2 text-left"
-              >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+              <th key={header.id} className="border border-gray-300 p-2 text-left">
+                {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
               </th>
             ))}
           </tr>
@@ -44,16 +40,25 @@ export function Table<T>({ columns, data }: TableProps<T>) {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id} className="even:bg-gray-50">
-            {row.getVisibleCells().map((cell) => (
-              <td
-                key={cell.id}
-                className="border border-gray-300 p-2"
-              >
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
+          <React.Fragment key={row.id}>
+            <tr
+              className="even:bg-gray-50 cursor-pointer"
+              onClick={() => row.toggleExpanded()}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="border border-gray-300 p-2">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+            {row.getIsExpanded() && renderSubComponent && (
+              <tr>
+                <td colSpan={row.getVisibleCells().length} className="border border-gray-300 p-4 bg-gray-50">
+                  {renderSubComponent(row)}
+                </td>
+              </tr>
+            )}
+          </React.Fragment>
         ))}
       </tbody>
     </table>

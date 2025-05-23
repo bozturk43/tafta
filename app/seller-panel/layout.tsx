@@ -46,6 +46,11 @@ export default function SellerPanelLayout({ children }: Props) {
               </Link>
             </li>
             <li className={`${!isMenuOpen ? "text-center":""}`}>
+              <Link href="/seller-panel/orders">
+                <span>{isMenuOpen ? "📦 Sipariş Yönetimi" : "📦"}</span>
+              </Link>
+            </li>
+            <li className={`${!isMenuOpen ? "text-center":""}`}>
               <Link href="/seller-panel/attributes">
                 <span>{isMenuOpen ? "📝 Nitelikler" : "📝"}</span>
               </Link>

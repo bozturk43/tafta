@@ -8,6 +8,9 @@ export type UserType = {
   id: string;
   type: "customer" | "producer";
   email: string;
+  name:string;
+  adress:string;
+  phone:string;
   token:string;
   avatarUrl?: string;
 };

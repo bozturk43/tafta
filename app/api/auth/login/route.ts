@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({
       success: true,
       token,
-      user: { id: userDoc.id, email: userData.email, type },
+      user: { id: userDoc.id, name:userData.name,phone:userData.phone,adress:userData.address || "", email: userData.email, type },
     });
 
     response.cookies.set("token", token, cookieOptions)

@@ -93,6 +93,7 @@ export default function ProductDetailInner({ productId }: { productId: string })
   const onSubmit = (data: FormData) => {
     const customizedProduct = {
       productId: productData?.product.id,
+      producerId:productData?.producer.id,
       name: productData?.product.name,
       image: productData?.product.images[0],
       basePrice: productData?.product.basePrice,
@@ -105,6 +106,8 @@ export default function ProductDetailInner({ productId }: { productId: string })
   };
 
   if (productIsLoading || !productData) return <div>Ürün Yükleniyor...</div>;
+
+  console.log(productData);
 
   const producerAttributes = transformAttributesToArray(productData.attributes);
   const finalProductAttributes = getFinalAttributes(productData.product.attributes, producerAttributes);

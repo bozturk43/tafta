@@ -57,8 +57,11 @@ export default function LoginPage() {
       const data = await response.json();
       const userObject: UserType = {
         id: data.user.id,
+        name:data.user.name,
         type: data.user.type,
         email: data.user.email,
+        phone:data.user.phone,
+        adress:data.user.adress,
         token: data.token
       }
       login(userObject);
