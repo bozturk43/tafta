@@ -26,6 +26,8 @@ export default function Header() {
   const { cartItems } = useCart();
   const totalQuantity = cartItems.length;
 
+  console.log(user);
+
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };

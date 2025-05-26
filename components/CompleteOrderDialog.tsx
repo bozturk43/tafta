@@ -1,17 +1,14 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useEffect } from "react";
 import {
-    Box,
     Button,
-    Typography,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     TextField,
 } from "@mui/material";
-import Image from "next/image";
 import { useCart } from "@/context/cartContetx";
 import { useAuth } from "@/context/authContext";
 import { useForm } from "react-hook-form";
@@ -73,10 +70,8 @@ export default function CompleteOrderDialog({ isOpen, onClose }: { isOpen: boole
 
             if (response.ok && result.success) {
                 alert(`Siparişiniz başarıyla oluşturuldu! Sipariş No: ${result.orderId}`);
-                onClose();  // Dialog kapatılır
-                // clearCart();
-                // İstersen burada sepeti temizleyebilirsin
-                // clearCart();
+                onClose(); 
+                clearCart();
             } else {
                 alert('Sipariş oluşturulurken bir hata oluştu: ' + (result.error || 'Bilinmeyen hata'));
             }
