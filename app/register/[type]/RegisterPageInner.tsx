@@ -32,7 +32,7 @@ export default function RegisterPageInner({ type }: { type: string }) {
   try {
     setLoading(true);
 
-    const response = await fetch("http://localhost:3000/api/auth/register", {  // API route'un adresini doğru ayarla
+    const response = await fetch("https://tafta-pied.vercel.app/api/auth/register", {  // API route'un adresini doğru ayarla
       method: "POST",
       headers: {
         "Content-Type": "application/json",

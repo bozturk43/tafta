@@ -1,5 +1,5 @@
 export const getWorkshopsData = async () => {
-  const res = await fetch("http://localhost:3000/api/global/get-workshops-data", {
+  const res = await fetch("https://tafta-pied.vercel.app/api/global/get-workshops-data", {
     cache: "no-store",
   });
 

@@ -1,5 +1,5 @@
 export const getSellerInfo = async (token: string) => {
-  const res = await fetch("http://localhost:3000/api/seller/get-seller-info", {
+  const res = await fetch("https://tafta-pied.vercel.app/api/seller/get-seller-info", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

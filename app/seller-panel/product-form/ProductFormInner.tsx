@@ -35,7 +35,7 @@ export default function ProductFormInner() {
                             setIsLoading(true);
 
                 try {
-                    const res = await fetch(`http://localhost:3000/api/global/get-product-by-id?id=${productId}`, {
+                    const res = await fetch(`https://tafta-pied.vercel.app/api/global/get-product-by-id?id=${productId}`, {
                         headers: {
                             Authorization: `Bearer ${user.token}`,
                         },
@@ -108,11 +108,11 @@ export default function ProductFormInner() {
                 description: data.description,
                 attributes: selectedAttributes,
             };
-            let apiUrl = "http://localhost:3000/api/seller/add-product";
+            let apiUrl = "https://tafta-pied.vercel.app/api/seller/add-product";
             let method = "POST";
 
             if (isEditing && productId) {
-                apiUrl = `http://localhost:3000/api/seller/update-product?id=${productId}`;
+                apiUrl = `https://tafta-pied.vercel.app/api/seller/update-product?id=${productId}`;
                 method = "PUT";
             }
             const res = await fetch(apiUrl, {
@@ -133,7 +133,7 @@ export default function ProductFormInner() {
                 });
                 formData.append("productId", targetProductId!);
 
-                await fetch(`http://localhost:3000/api/seller/upload-product-images`, {
+                await fetch(`https://tafta-pied.vercel.app/api/seller/upload-product-images`, {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${user.token}`,
@@ -143,7 +143,7 @@ export default function ProductFormInner() {
             }
             // Silinen resimleri güncelle (eğer düzenleme modundaysa)
             if (isEditing && existingImages.length > 0) {
-                await fetch(`http://localhost:3000/api/seller/update-product-images`, {
+                await fetch(`https://tafta-pied.vercel.app/api/seller/update-product-images`, {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${user.token}`,

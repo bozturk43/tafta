@@ -1,5 +1,5 @@
 export const getProducerProducts = async (producerId: string) => {
-  const res = await fetch(`http://localhost:3000/api/seller/get-producer-products?id=${producerId}`, {
+  const res = await fetch(`https://tafta-pied.vercel.app//api/seller/get-producer-products?id=${producerId}`, {
     cache: "no-store",
   });
 
