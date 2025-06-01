@@ -101,8 +101,26 @@ export default function SellerAttributePage() {
   if (isLoading) return <div>Yükleniyor...</div>;
   if (error) return <div>Hata: {(error as Error).message}</div>;
 
-  if (!data || data.length === 0)
-    return <div>Henüz Ürün Eklemediniz.</div>;
+  if (!data || data.length === 0) {
+    return (
+      <div>
+        <p>Henüz Nitelik Eklenmedi.</p>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              router.push('attribute-form');
+            }}
+          >
+            Yeni Nitelik Ekle
+          </Button>
+        </Stack>
+      </div>
+    )
+  }
+
   return (
     <div>
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>

@@ -109,7 +109,7 @@ export default function SellerDashboardPage() {
               <IconButton color="primary" size="small" onClick={handleUpdate} aria-label="güncelle">
                 <EditIcon />
               </IconButton>
-              <IconButton color="error" size="small" onClick={()=>handleDelete(row.original.id)} aria-label="sil">
+              <IconButton color="error" size="small" onClick={() => handleDelete(row.original.id)} aria-label="sil">
                 <DeleteIcon />
               </IconButton>
             </Stack>
@@ -122,8 +122,28 @@ export default function SellerDashboardPage() {
   if (isLoading) return <div>Yükleniyor...</div>;
   if (error) return <div>Hata: {(error as Error).message}</div>;
 
-  if (!products || products.length === 0)
-    return <div>Henüz Ürün Eklemediniz.</div>;
+  if (!products || products.length === 0) {
+    return (
+
+      <div>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
+          <p>Henüz ürün eklenmedi</p>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              router.push('product-form');
+            }}
+          >
+            Yeni Ürün Ekle
+          </Button>
+        </Stack>
+      </div>
+
+    );
+
+  }
 
   return (
     <div>
