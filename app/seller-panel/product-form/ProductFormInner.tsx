@@ -47,6 +47,7 @@ export default function ProductFormInner() {
                         name: product.name,
                         basePrice: product.basePrice,
                         description: product.description,
+                        averageTime:product.averageTime,
                     });
 
                     // Varyasyonları ayarla
@@ -106,6 +107,7 @@ export default function ProductFormInner() {
                 name: data.name,
                 basePrice: parseFloat(data.basePrice),
                 description: data.description,
+                averageTime:data.averageTime,
                 attributes: selectedAttributes,
             };
             let apiUrl = "https://tafta-pied.vercel.app/api/seller/add-product";
