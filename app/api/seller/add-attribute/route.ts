@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/app/lib/firebase";
-import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { jwtVerify } from "jose";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,11 +21,7 @@ export async function POST(req: NextRequest) {
     }
 
     const token = authHeader.replace("Bearer ", "");
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET)
-    );
-
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
     const jwtPayload = payload as JWTPayload;
 
     if (jwtPayload.type !== "producer") {
@@ -41,33 +37,43 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const producerId = jwtPayload.id; // Artık string tipinde olduğunu biliyoruz
+    const producerId = jwtPayload.id;
     const attributeId = uuidv4();
+    const attributeData = {
+      name,
+      options,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
 
-    // 3. Mevcut producer dokümanını güncelleme
     const producerRef = doc(db, "attributes", producerId);
-    
-    await updateDoc(producerRef, {
-      [`${attributeId}`]: {
-        name,
-        options,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      }
-    });
-    return NextResponse.json({ 
-      success: true, 
-      attributeId: attributeId,
-      producerId: producerId,
-      message: "Attribute başarıyla eklendi" 
+    const producerSnap = await getDoc(producerRef);
+
+    if (producerSnap.exists()) {
+      // Belge varsa sadece yeni attribute'u ekle
+      await updateDoc(producerRef, {
+        [attributeId]: attributeData
+      });
+    } else {
+      // Belge yoksa yeni belge oluştur
+      await setDoc(producerRef, {
+        [attributeId]: attributeData
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      attributeId,
+      producerId,
+      message: "Attribute başarıyla eklendi"
     });
 
   } catch (error) {
     console.error("Attribute eklenirken hata:", error);
     return NextResponse.json(
-      { 
-        error: "Sunucu hatası", 
-        details: error instanceof Error ? error.message : String(error) 
+      {
+        error: "Sunucu hatası",
+        details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }
     );
