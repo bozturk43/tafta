@@ -52,8 +52,14 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
         try {
             const res = await fetch(`/api/message/get-messages?user1=${user?.id}&user2=${receiverId}`);
             const data = await res.json();
-            setMessages(data.messages || []);
-            console.log(data.messages);
+
+            const sortedMessages = (data.messages || []).sort((a: Message, b: Message) => {
+                const aTime = a.timestamp.seconds * 1_000_000_000 + a.timestamp.nanoseconds;
+                const bTime = b.timestamp.seconds * 1_000_000_000 + b.timestamp.nanoseconds;
+                return aTime - bTime;
+            });
+
+            setMessages(sortedMessages);
         } catch (err) {
             console.error("Mesajlar alınamadı:", err);
         }
@@ -88,7 +94,7 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
         if (open) {
             fetchMessages();
         }
-    }, [open,receiverId]);
+    }, [open, receiverId]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -137,14 +143,15 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
                         flexDirection: "column",
                         gap: 1,
                         pb: 2,
+
                     }}
                 >
                     {messages.map((msg) => (
-                        <>
+                        <div className="flex flex-col items-start">
                             <Box
                                 key={msg.id}
                                 sx={{
-                                    alignSelf: msg.senderId === user?.id ? "flex-end" : "flex-start",
+                                    // alignSelf: msg.senderId === user?.id ? "flex-end" : "flex-start",
                                     bgcolor: msg.senderId === user?.id ? "primary.light" : "grey.300",
                                     color: "black",
                                     px: 2,
@@ -155,9 +162,9 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
                             >
                                 {msg.content}
                             </Box>
-                            <p className={`${msg.senderId === user?.id ? "text-end" : "text-start"} text-[9px]`}>{msg.senderId === user?.id ? "Siz" : `${recieverName}`}</p>
+                            <p className={`${"text-start"} text-[9px]`}>{msg.senderId === user?.id ? "Siz" : `${recieverName}`}</p>
 
-                        </>
+                        </div>
                     ))}
                     <div ref={bottomRef} />
                 </Box>

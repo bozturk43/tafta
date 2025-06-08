@@ -69,9 +69,6 @@ export default function Header() {
           <Link href="/workshops" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
             Atölyeler
           </Link>
-          <Link href="/about-us" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
-            Hikayemiz
-          </Link>
           <Link href="/contact" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
             İletisim
           </Link>
