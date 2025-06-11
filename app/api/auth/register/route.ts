@@ -7,8 +7,6 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name,email, password, type,title,description } = body;
 
-    console.log(body);
-
     if (!email || !password || !type) {
       return NextResponse.json({ message: "Eksik alanlar var." }, { status: 400 });
     }

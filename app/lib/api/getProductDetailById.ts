@@ -1,5 +1,7 @@
 export const getProductDetailById = async (productId: string) => {
-  const res = await fetch(`https://tafta-pied.vercel.app/api/global/get-product-detail-by-id?prdid=${productId}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/global/get-product-detail-by-id?prdid=${productId}`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Ürün Bilgileri alınamadı");

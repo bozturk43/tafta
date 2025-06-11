@@ -30,7 +30,6 @@ export default function SellerAttributePage() {
     enabled: !!token,
     select: (data) => transformAttributesToArray(data) // Veriyi otomatik dönüştür
   });
-  console.log(data);
 
   const columns = useMemo<ColumnDef<Attribute>[]>(
     () => [

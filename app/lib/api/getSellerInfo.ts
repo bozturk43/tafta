@@ -1,5 +1,7 @@
 export const getSellerInfo = async (token: string) => {
-  const res = await fetch("https://tafta-pied.vercel.app/api/seller/get-seller-info", {
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/seller/get-seller-info`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -9,6 +11,5 @@ export const getSellerInfo = async (token: string) => {
   if (!res.ok) throw new Error("Nitelikler alınamadı");
 
   const data = await res.json();
-  console.log(data);
   return data;
 };

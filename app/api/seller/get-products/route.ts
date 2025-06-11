@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
 
     const token = authHeader.replace("Bearer ", "");
     let payload;
-    console.log(token);
     try {
       const { payload: jwtPayload } = await jwtVerify(
         token,
@@ -54,7 +53,7 @@ export async function GET(req: NextRequest) {
           images = await Promise.all(urlPromises);
         } catch (err) {
           // klasör yoksa veya erişilemiyorsa boş array bırak
-          console.log(err);
+          console.error(err);
           images = [];
         }
 

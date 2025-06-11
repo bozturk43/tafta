@@ -1,5 +1,7 @@
 export const getWorkshopsData = async () => {
-  const res = await fetch("https://tafta-pied.vercel.app/api/global/get-workshops-data", {
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/global/get-workshops-data`, {
     cache: "no-store",
   });
 

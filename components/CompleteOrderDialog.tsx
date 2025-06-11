@@ -12,12 +12,14 @@ import {
 import { useCart } from "@/context/cartContetx";
 import { useAuth } from "@/context/authContext";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 export default function CompleteOrderDialog({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
-    const { cartItems,clearCart} = useCart();
+    const { cartItems, clearCart } = useCart();
     const { user } = useAuth();
+    const router = useRouter();
 
-    console.log(user);
+
     const {
         register,
         handleSubmit,
@@ -47,10 +49,6 @@ export default function CompleteOrderDialog({ isOpen, onClose }: { isOpen: boole
     }, [user, setValue, reset, isOpen]);
 
     const onSubmit = async (data: any) => {
-        console.log("Sipariş verisi:", {
-            ...data,
-            items: cartItems,
-        });
 
         try {
             const body = {
@@ -69,21 +67,21 @@ export default function CompleteOrderDialog({ isOpen, onClose }: { isOpen: boole
             const result = await response.json();
 
             if (response.ok && result.success) {
-                alert(`Siparişiniz başarıyla oluşturuldu! Sipariş No: ${result.orderId}`);
-                onClose(); 
+                const orderId = result.orderId;
+                sessionStorage.setItem("orderNumber", orderId);
+                onClose();
+                router.push("/order-complete");
                 clearCart();
+
             } else {
                 alert('Sipariş oluşturulurken bir hata oluştu: ' + (result.error || 'Bilinmeyen hata'));
+
             }
         } catch (error) {
             console.error('Sipariş gönderim hatası:', error);
             alert('Sunucu ile bağlantı kurulamadı.');
         }
 
-        // Burada sipariş API'ına gönderim yapılabilir
-
-        // setDialogOpen(false);
-        // clearCart();
     };
 
     return (

@@ -51,7 +51,6 @@ export default function CustomOrderInner({user}:{user:UserType}) {
                 if (!res.ok) throw new Error("Veri alınamadı");
 
                 const json = await res.json();
-                console.log(json);
                 setData(json.requests);
             } catch (error) {
                 alert("İstekler yüklenirken hata oluştu");

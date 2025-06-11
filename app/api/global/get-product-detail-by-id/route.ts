@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const productId = searchParams.get('prdid');
 
-  console.log(productId);
 
   if (!productId) {
     return NextResponse.json({ error: 'productId (prdid) parametresi gerekli' }, { status: 400 });

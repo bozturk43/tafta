@@ -26,7 +26,6 @@ export default function Header() {
   const { cartItems } = useCart();
   const totalQuantity = cartItems.length;
 
-  console.log(user);
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -126,8 +125,8 @@ export default function Header() {
                     </Link>
                   </MenuItem>
                   <MenuItem onClick={handleMenuClose}>
-                    <Link href="/messages"  sx={{textDecoration:"none",color:"black"}}>
-                      Mesajlarım
+                    <Link href="/customer-orders"  sx={{textDecoration:"none",color:"black"}}>
+                      Siparişlerim
                     </Link>
                   </MenuItem>
                   <MenuItem onClick={handleMenuClose}>
@@ -135,6 +134,12 @@ export default function Header() {
                       Özel Siparişlerim
                     </Link>
                   </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link href="/messages"  sx={{textDecoration:"none",color:"black"}}>
+                      Mesajlarım
+                    </Link>
+                  </MenuItem>
+                  
                   <MenuItem onClick={handleLogout}>Çıkış Yap</MenuItem>
                 </Menu>
               )}

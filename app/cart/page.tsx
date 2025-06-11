@@ -10,8 +10,6 @@ export default function CartPage() {
     const { cartItems, removeFromCart, clearCart } = useCart();
     const [completeDialog,setCompleteDialog] = useState<boolean>(false)
 
-    console.log("cartItems", cartItems);
-
     const totalPrice = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
 
 

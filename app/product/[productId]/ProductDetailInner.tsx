@@ -100,14 +100,12 @@ export default function ProductDetailInner({ productId }: { productId: string })
       selectedAttributes: data.attributes,
       totalPrice,
     };
-    console.log("customizedProduct", customizedProduct);
       addToCart(customizedProduct);
 
   };
 
   if (productIsLoading || !productData) return <div>Ürün Yükleniyor...</div>;
 
-  console.log(productData);
 
   const producerAttributes = transformAttributesToArray(productData.attributes);
   const finalProductAttributes = getFinalAttributes(productData.product.attributes, producerAttributes);

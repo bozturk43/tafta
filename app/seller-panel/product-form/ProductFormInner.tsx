@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { CircularProgress } from "@mui/material";
 
 export default function ProductFormInner() {
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const { user } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -33,9 +34,8 @@ export default function ProductFormInner() {
         const loadProductData = async () => {
             if (productId) {
                             setIsLoading(true);
-
                 try {
-                    const res = await fetch(`https://tafta-pied.vercel.app/api/global/get-product-by-id?id=${productId}`, {
+                    const res = await fetch(`${baseUrl}/api/global/get-product-by-id?id=${productId}`, {
                         headers: {
                             Authorization: `Bearer ${user.token}`,
                         },
@@ -110,11 +110,11 @@ export default function ProductFormInner() {
                 averageTime:data.averageTime,
                 attributes: selectedAttributes,
             };
-            let apiUrl = "https://tafta-pied.vercel.app/api/seller/add-product";
+            let apiUrl = `${baseUrl}/api/seller/add-product`;
             let method = "POST";
 
             if (isEditing && productId) {
-                apiUrl = `https://tafta-pied.vercel.app/api/seller/update-product?id=${productId}`;
+                apiUrl = `${baseUrl}/api/seller/update-product?id=${productId}`;
                 method = "PUT";
             }
             const res = await fetch(apiUrl, {
@@ -135,7 +135,7 @@ export default function ProductFormInner() {
                 });
                 formData.append("productId", targetProductId!);
 
-                await fetch(`https://tafta-pied.vercel.app/api/seller/upload-product-images`, {
+                await fetch(`${baseUrl}/api/seller/upload-product-images`, {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${user.token}`,
@@ -145,7 +145,7 @@ export default function ProductFormInner() {
             }
             // Silinen resimleri güncelle (eğer düzenleme modundaysa)
             if (isEditing && existingImages.length > 0) {
-                await fetch(`https://tafta-pied.vercel.app/api/seller/update-product-images`, {
+                await fetch(`${baseUrl}/api/seller/update-product-images`, {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${user.token}`,

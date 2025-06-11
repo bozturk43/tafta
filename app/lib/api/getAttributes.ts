@@ -1,5 +1,7 @@
 export const getAttributes = async (token: string) => {
-  const res = await fetch("https://tafta-pied.vercel.app//api/seller/get-attributes", {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/seller/get-attributes`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

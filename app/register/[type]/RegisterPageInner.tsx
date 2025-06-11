@@ -21,6 +21,8 @@ type FormValues = {
 
 export default function RegisterPageInner({ type }: { type: string }) {
     const router = useRouter();
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
     const {
         register,
         handleSubmit,
@@ -29,33 +31,33 @@ export default function RegisterPageInner({ type }: { type: string }) {
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async (data: FormValues) => {
-  try {
-    setLoading(true);
+        try {
+            setLoading(true);
 
-    const response = await fetch("https://tafta-pied.vercel.app/api/auth/register", {  // API route'un adresini doğru ayarla
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...data, type }),
-    });
+            const response = await fetch(`${baseUrl}/api/auth/register`, {  // API route'un adresini doğru ayarla
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ...data, type }),
+            });
 
-    const result = await response.json();
+            const result = await response.json();
 
-    if (!response.ok) {
-      alert(result.message || "Bir hata oluştu.");
-      return;
-    }
+            if (!response.ok) {
+                alert(result.message || "Bir hata oluştu.");
+                return;
+            }
 
-    alert("Kayıt başarılı!");
-    router.push("/login");
-  } catch (err) {
-    console.error("Kayıt başarısız:", err);
-    alert("Bir hata oluştu.");
-  } finally {
-    setLoading(false);
-  }
-};
+            alert("Kayıt başarılı!");
+            router.push("/login");
+        } catch (err) {
+            console.error("Kayıt başarısız:", err);
+            alert("Bir hata oluştu.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Container maxWidth="sm">

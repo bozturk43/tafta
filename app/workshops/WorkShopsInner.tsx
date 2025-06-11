@@ -23,7 +23,6 @@ export default function WorkShopsInner() {
             <div>Veriler Alınırken Hata Oluştu</div>
         )
     };
-    console.log(workshopsData)
     return (
         <div className="p-16">
             <Typography variant="h4" color="primary" fontWeight={800} className="text-center">

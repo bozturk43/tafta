@@ -27,8 +27,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: true, messages: [] });
     }
 
-    console.log(matchingDoc.data());
-    // 🔥 Alt koleksiyonu çek
     const messagesRef = subCollection(db, "conversations", matchingDoc.id, "messages");
     const messagesSnap = await getSubDocs(messagesRef);
     const messages = messagesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));

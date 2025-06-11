@@ -18,9 +18,6 @@ export function getFinalAttributes(
   productAttributes: ProductAttributeRef[],
   allAttributes: Attribute[]
 ): Attribute[] {
-
-    console.log(productAttributes);
-    console.log(allAttributes);
   const attributeMap = new Map(allAttributes.map(attr => [attr.id, attr]));
 
   return productAttributes

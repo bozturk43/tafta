@@ -1,5 +1,7 @@
 export const getProducerProducts = async (producerId: string) => {
-  const res = await fetch(`https://tafta-pied.vercel.app//api/seller/get-producer-products?id=${producerId}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/seller/get-producer-products?id=${producerId}`, {
     cache: "no-store",
   });
 

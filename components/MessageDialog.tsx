@@ -147,7 +147,7 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
                     }}
                 >
                     {messages.map((msg) => (
-                        <div className="flex flex-col items-start">
+                        <div className="flex flex-col items-start" key={msg.id}>
                             <Box
                                 key={msg.id}
                                 sx={{

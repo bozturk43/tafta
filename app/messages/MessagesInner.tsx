@@ -64,7 +64,6 @@ export default function MessagesInner() {
         );
     }
 
-    console.log(conversations);
 
     return (
         <>

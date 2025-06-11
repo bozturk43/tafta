@@ -16,7 +16,6 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 export async function GET(req: Request) {
     try {
         const authHeader = req.headers.get("authorization");
-        console.log(authHeader);
         if (!authHeader)
             return NextResponse.json({ error: "Yetki gerekli" }, { status: 401 });
 
