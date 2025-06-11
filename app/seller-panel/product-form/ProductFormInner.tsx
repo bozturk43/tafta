@@ -33,7 +33,7 @@ export default function ProductFormInner() {
         if (!user?.token) return;
         const loadProductData = async () => {
             if (productId) {
-                            setIsLoading(true);
+                setIsLoading(true);
                 try {
                     const res = await fetch(`${baseUrl}/api/global/get-product-by-id?id=${productId}`, {
                         headers: {
@@ -47,7 +47,7 @@ export default function ProductFormInner() {
                         name: product.name,
                         basePrice: product.basePrice,
                         description: product.description,
-                        averageTime:product.averageTime,
+                        averageTime: product.averageTime,
                     });
 
                     // Varyasyonları ayarla
@@ -99,6 +99,33 @@ export default function ProductFormInner() {
         setExistingImages(newImages);
     };
 
+    const handleDeleteImage = async (imageUrl: string) => {
+        if (!user?.token) return;
+
+        try {
+            const res = await fetch('/api/seller/delete-product-image', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`, // Varsa
+                },
+                body: JSON.stringify({ imageUrl }),
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                console.log('Görsel silindi:', data.message);
+                // Görseli state'ten de çıkar:
+                setExistingImages(prev => prev.filter(img => img !== imageUrl));
+            } else {
+                console.error('Hata:', data.error);
+            }
+        } catch (error) {
+            console.error('Silme hatası:', error);
+        }
+    };
+
+
     const onSubmit = async (data: any) => {
         if (!user?.token) return;
         try {
@@ -107,7 +134,7 @@ export default function ProductFormInner() {
                 name: data.name,
                 basePrice: parseFloat(data.basePrice),
                 description: data.description,
-                averageTime:data.averageTime,
+                averageTime: data.averageTime,
                 attributes: selectedAttributes,
             };
             let apiUrl = `${baseUrl}/api/seller/add-product`;
@@ -128,7 +155,7 @@ export default function ProductFormInner() {
             const { productId: returnedProductId } = await res.json();
             const targetProductId = isEditing ? productId : returnedProductId;
             // Yeni görselleri gönder (eğer varsa)
-            if (selectedFiles.length > 0) {
+            if (isEditing === false && selectedFiles.length > 0) {
                 const formData = new FormData();
                 selectedFiles.forEach((file: File, i: number) => {
                     formData.append("images", file, i === 0 && !isEditing ? "thumbnail.jpg" : file.name);
@@ -143,18 +170,22 @@ export default function ProductFormInner() {
                     body: formData,
                 });
             }
-            // Silinen resimleri güncelle (eğer düzenleme modundaysa)
-            if (isEditing && existingImages.length > 0) {
+            if (isEditing && selectedFiles.length > 0) {
+                const formData = new FormData();
+                formData.append('productId', targetProductId);
+
+                selectedFiles.forEach(file => {
+                    formData.append('images', file);
+                });
+
+
                 await fetch(`${baseUrl}/api/seller/update-product-images`, {
-                    method: "POST",
+                    method: 'POST',
                     headers: {
                         Authorization: `Bearer ${user.token}`,
-                        "Content-Type": "application/json",
+                        // ❌ Content-Type belirtme, fetch kendisi `multipart/form-data` olarak ayarlayacak
                     },
-                    body: JSON.stringify({
-                        productId: targetProductId,
-                        images: existingImages,
-                    }),
+                    body: formData,
                 });
             }
             router.push("/seller-panel/products");
@@ -336,7 +367,10 @@ export default function ProductFormInner() {
                                         />
                                         <button
                                             type="button"
-                                            onClick={() => removeExistingImage(idx)}
+                                            onClick={() => { 
+                                                removeExistingImage(idx); 
+                                                handleDeleteImage(url) ;
+                                            }}
                                             className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
                                             aria-label="Remove image"
                                         >
