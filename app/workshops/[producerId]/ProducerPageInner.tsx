@@ -6,7 +6,7 @@ import { getAttributesWoToken } from "@/app/lib/api/getAttributeWoToken";
 import { getProducerProducts } from "@/app/lib/api/getProducerProducts";
 import { calculatePriceRange } from "@/app/lib/helpers/calculatePriceRange";
 import { Attribute } from "@/app/lib/types";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import { useState } from "react";
@@ -48,8 +48,8 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
         <div className="min-h-screen bg-white">
             {/* Üst Başlık */}
             <div className="bg-blue-900 text-white py-6 text-center relative">
-                <h1 className="text-2xl font-bold">{pageData.producer.name}’ün Atölyesi</h1>
-                <p className="text-sm mt-1">Üretmekten Mutluluk Duydukları</p>
+                <h1 className="text-[30px] font-bold">{pageData.producer.name}’ün Atölyesi</h1>
+                <p className="text-[20px] mt-1">Üretmekten Mutluluk Duydukları</p>
             </div>
 
             <div className="flex flex-col lg:flex-row pe-4">
@@ -72,28 +72,28 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                         </p>
 
                         {/* Butonlar */}
-                        <div className="mt-6 flex flex-col gap-4 w-full">
-                            <div className="flex flex-row bg-blue-50 h-[40px] rounded-lg">
-                                <div className="w-1/4">
-                                    <Image src="/4.png" alt="" width={40} height={40} />
+                        <div className="mt-6 flex flex-col gap-4 w-full items-center pe-4">
+                            <div className="flex flex-row bg-blue-50 h-[50px] rounded-full w-60 pe-4">
+                                <div className="w-1/4 ml-4" style={{marginTop:"-2px"}}>
+                                    <Image src="/4.png" alt="" width={50} height={50} />
                                 </div>
-                                <Button className="w-3/4" sx={{ fontSize: "8px", color: "red" }}>
-                                    Ürünün kalbine bir yolculuk izlemek istersen, tıkla.
+                                <Button className="w-3/4" sx={{ fontSize: "12px", color: "#161E50", lineHeight:"1.2" }}>
+                                    Ürünün Kalbine Yolculuk İçin Tıkla.
                                 </Button>
                             </div>
-                            <div className="flex flex-row bg-[#97c11f] h-[40px] rounded-lg">
-                                <div className="w-1/4">
-                                    <Image src="/1.png" alt="" width={40} height={40} />
+                            <div className="flex flex-row bg-[#97c11f] h-[50px] rounded-full w-60 pe-4">
+                                <div className="w-1/4 ml-4">
+                                    <Image src="/1.png" alt="" width={50} height={50} />
                                 </div>
-                                <Button className="w-3/4" sx={{ fontSize: "9px", color: "white" }} disabled={!user} onClick={()=>setcustomReqOpen(true)}>
+                                <Button className="w-3/4" sx={{ fontSize: "12px", color: "white",lineHeight:"1.2" }} disabled={!user} onClick={()=>setcustomReqOpen(true)}>
                                     Yeni Bir Fikrin mi Var? Özel Sipariş İste
                                 </Button>
                             </div>
-                            <div className="flex flex-row bg-[#F9F9F9] h-[40px] border-2 border-[#97c11f] rounded-lg">
-                                <div className="w-1/4">
-                                    <Image src="/2.png" alt="" width={40} height={40} />
+                            <div className="flex flex-row bg-[#F9F9F9] h-[50px] border-2 border-[#97c11f] rounded-full w-60 pe-4">
+                                <div className="w-1/4 ml-4">
+                                    <Image src="/2.png" alt="" width={50} height={50} />
                                 </div>
-                                <Button className="w-3/4" sx={{ fontSize: "9px", color: "#97c11f" }} disabled={!user} onClick={() => setOpen(true)}>
+                                <Button className="w-3/4" sx={{ fontSize: "12px", color: "#97c11f" }} disabled={!user} onClick={() => setOpen(true)}>
                                     Usta ile İletişime Geç
                                 </Button>
                             </div>
@@ -117,22 +117,23 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
                                     height={200}
                                     className="rounded-xl object-cover"
                                 />
-                                <h3 className="mt-4 text-md font-bold text-blue-800">
+                                <Divider sx={{marginTop:2, width:"80%"}} orientation="horizontal" ></Divider>
+                                <h3 className="mt-4 text-md font-bold text-[#2A3788]">
                                     {product.name}
                                 </h3>
 
                                 {
                                     product.attributes.length > 0 ?
-                                        <p className="text-sm">
+                                        <p className="text-[12px] text-[#161E50] mt-2">
                                             Fiyat Aralığı: <strong>{calculatePriceRange(attributesData as Attribute[], product.attributes, product.basePrice)}</strong>
                                         </p>
                                         :
-                                        <p className="text-sm">
+                                        <p className="text-[12px] text-[#161E50] mt-2">
                                             Fiyat: <strong> {product.basePrice}</strong>
                                         </p>
                                 }
 
-                                <p className="text-sm">
+                                <p className="text-[12px] text-[#161E50]">
                                     Ort. Yapılış Süresi: <strong>{product.averageTime}</strong>
                                 </p>
                             </div>

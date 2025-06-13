@@ -41,6 +41,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           letterSpacing: '0.028em', // Condensed font için daha sık aralık
+          textTransform:"none"
         },
       },
     },
