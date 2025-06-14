@@ -69,7 +69,7 @@ export default function Header() {
             Atölyeler
           </Link>
           <Link href="/contact" fontWeight={500} color="secondary" underline="none" className="flex justify-center items-center">
-            İletisim
+            İletişim
           </Link>
         </div>
 

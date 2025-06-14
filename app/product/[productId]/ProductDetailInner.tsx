@@ -93,14 +93,14 @@ export default function ProductDetailInner({ productId }: { productId: string })
   const onSubmit = (data: FormData) => {
     const customizedProduct = {
       productId: productData?.product.id,
-      producerId:productData?.producer.id,
+      producerId: productData?.producer.id,
       name: productData?.product.name,
       image: productData?.product.images[0],
       basePrice: productData?.product.basePrice,
       selectedAttributes: data.attributes,
       totalPrice,
     };
-      addToCart(customizedProduct);
+    addToCart(customizedProduct);
 
   };
 
@@ -116,39 +116,36 @@ export default function ProductDetailInner({ productId }: { productId: string })
       <div className="flex flex-row w-full px-12 mb-20 justify-between py-4 rounded" style={{ backgroundColor: "#e4eef7" }}>
         <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 overflow-x-auto">
           {productData.product.images.map((src: string, i: number) => (
-            <Card key={i} className="w-28 h-28 flex-shrink-0">
-              <CardMedia component="img" height="100" image={src} alt={`product-${i}`} />
+            <Card key={i}
+              className="w-28 h-28 flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out hover:w-100 hover:h-100 hover:fixed hover:z-99"
+            >
+              <CardMedia component="img" height="100" image={src} alt={`product-${i}`}
+                className="w-full h-full object-cover"
+              />
             </Card>
           ))}
         </div>
         <div className="flex gap-4 items-center">
           <Avatar src={productData.producer.image} sx={{ width: 60, height: 60 }} />
-          <div>
-            <Typography fontWeight="bold">{productData.producer.name}</Typography>
-            <Typography variant="body2">{productData.producer.title}</Typography>
-            <Typography variant="body2">{productData.product.name}</Typography>
-            <Typography variant="caption">
+          <div className='flex flex-col'>
+            <Typography fontWeight="bold" color='primary'>{productData.producer.name}</Typography>
+            <Typography variant="body2" color='primary'>{productData.producer.title}</Typography>
+            <Typography variant="body2" color='primary'>{productData.product.name}</Typography>
+            <Typography variant="caption" sx={{ color: "#161E50", marginTop: "10px" }}>
               Fiyat Aralığı: {calculatePriceRange(producerAttributes as Attribute[], productData.product.attributes, productData.product.basePrice)} ₺
-            </Typography><br />
-            <Typography variant="caption">Ort. Yapılış Süresi: {productData.product.averageTime}</Typography>
+            </Typography>
+            <Typography variant="caption" sx={{ color: "#161E50" }}>Ort. Yapılış Süresi: {productData.product.averageTime}</Typography>
           </div>
         </div>
       </div>
 
       {/* Ürün Özelleştirme */}
       <div className="mt-10">
-        <Typography variant="h5" fontWeight="bold" className="text-center text-blue-900">Şimdi Sıra Sende</Typography>
-        <Typography className="text-center text-gray-600 mb-6">Nasıl istersen öyle Üretelim!</Typography>
+        <Typography sx={{ fontSize: "36px" }} fontWeight="bold" className="text-center" color='primary'>Şimdi Sıra Sende</Typography>
+        <Typography className="text-center text-gray-600 mb-6" sx={{ fontSize: "20px" }}>Nasıl İstersen Öyle Üretelim!</Typography>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-          <div className="flex flex-col items-center gap-4">
-            <Image src={productData.product.images[0]} alt="preview" width={400} height={400} className="rounded" />
-            <Typography fontWeight="bold" className="border p-2 rounded-xl text-green-900 w-40 text-center">
-              {totalPrice}₺<br /><small className="text-sm">Toplam Fiyat</small>
-            </Typography>
-          </div>
-
-          <div className="flex flex-col space-y-6 mt-12 pb-8 h-full justify-between">
+          <div className="flex flex-col space-y-6 mt-12 ps-24 pb-8 h-full justify-between">
             {finalProductAttributes.map((attrItem: any, index: number) => (
               <div key={attrItem.id}>
                 <Typography fontWeight="bold">{index + 1}-{attrItem.name} ?</Typography>
@@ -166,14 +163,18 @@ export default function ProductDetailInner({ productId }: { productId: string })
                           handleOptionChange(attrItem.id, selectedOption);
                         }}
                       >
-                        {attrItem.options.map((itemOption: any, i: number) => (
-                          <FormControlLabel
-                            key={i}
-                            value={itemOption.value}
-                            control={<Radio />}
-                            label={`${itemOption.value} + ${itemOption.extraPrice} ₺`}
-                          />
-                        ))}
+                        <div className='grid grid-cols-2 items-start'>
+
+                          {attrItem.options.map((itemOption: any, i: number) => (
+                            <FormControlLabel
+                              key={i}
+                              value={itemOption.value}
+                              control={<Radio />}
+                              label={`${itemOption.value} + ${itemOption.extraPrice} ₺`}
+                            />
+                          ))}
+                        </div>
+
                       </RadioGroup>
                     );
                   }}
@@ -189,6 +190,11 @@ export default function ProductDetailInner({ productId }: { productId: string })
             >
               ❤️ Bunu Sevdim, Sepete Ekle!
             </Button>
+          </div>
+          <div className="flex flex-col h-full items-center justify-center gap-4">
+            <Typography fontWeight="bold" className="border p-2 rounded-xl text-green-900 w-40 text-center">
+              {totalPrice}₺<br /><small className="text-sm">Toplam Fiyat</small>
+            </Typography>
           </div>
         </div>
       </div>

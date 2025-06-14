@@ -142,18 +142,19 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
                         display: "flex",
                         flexDirection: "column",
                         gap: 1,
-                        pb: 2,
+                        paddingX:"20%"
 
                     }}
                 >
+                    <div className="h-full bg-[#f4f6fc] px-4 py-4 ">
                     {messages.map((msg) => (
                         <div className="flex flex-col items-start" key={msg.id}>
                             <Box
                                 key={msg.id}
                                 sx={{
-                                    // alignSelf: msg.senderId === user?.id ? "flex-end" : "flex-start",
-                                    bgcolor: msg.senderId === user?.id ? "primary.light" : "grey.300",
-                                    color: "black",
+                                    alignSelf: msg.senderId === user?.id ? "flex-end" : "flex-start",
+                                    bgcolor: msg.senderId === user?.id ? "#2b3887" : "#89cafd",
+                                    color: "white",
                                     px: 2,
                                     py: 1,
                                     borderRadius: 2,
@@ -162,10 +163,11 @@ export default function MessageDialog({ open, onClose, receiverId, recieverImage
                             >
                                 {msg.content}
                             </Box>
-                            <p className={`${"text-start"} text-[9px]`}>{msg.senderId === user?.id ? "Siz" : `${recieverName}`}</p>
+                            <p className={`${msg.senderId === user?.id ? "w-full text-end"  : "text-start" } text-[9px]`}>{msg.senderId === user?.id ? "Siz" : `${recieverName}`}</p>
 
                         </div>
                     ))}
+                    </div>
                     <div ref={bottomRef} />
                 </Box>
 

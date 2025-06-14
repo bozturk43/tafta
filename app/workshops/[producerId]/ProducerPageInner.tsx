@@ -73,7 +73,7 @@ export default function ProducerPageInner({ producerId }: { producerId: string }
 
                         {/* Butonlar */}
                         <div className="mt-6 flex flex-col gap-4 w-full items-center pe-4">
-                            <div className="flex flex-row bg-blue-50 h-[50px] rounded-full w-60 pe-4">
+                            <div className="flex flex-row bg-blue-50 h-[50px] rounded-full w-60 pe-4 mb-8">
                                 <div className="w-1/4 ml-4" style={{marginTop:"-2px"}}>
                                     <Image src="/4.png" alt="" width={50} height={50} />
                                 </div>
