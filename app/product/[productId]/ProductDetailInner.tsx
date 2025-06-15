@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { Button, Radio, RadioGroup, FormControlLabel, Typography, Card, CardMedia, Avatar, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { useCart } from '@/context/cartContetx';
 import { getProductDetailById } from '@/app/lib/api/getProductDetailById';

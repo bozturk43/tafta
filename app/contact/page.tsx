@@ -1,7 +1,4 @@
-// /pages/order-complete.tsx
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const OrderCompletePage = () => {
