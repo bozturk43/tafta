@@ -135,11 +135,8 @@ export default function LoginPage() {
             <div className="flex flex-row h-full">
               {/* Sol taraf */}
               <div className="flex-1 flex flex-col items-center justify-center p-6">
-                <Typography variant="h5" className="mt-4 text-center" fontWeight="bold">
-                  Sanat Eserlerine Ulaş
-                </Typography>
                 <Image
-                  src="/customer-signup.jpg" // public klasörüne bir resim koy
+                  src="/musteri.jpg" // public klasörüne bir resim koy
                   alt="Customer Visual"
                   width={400}
                   height={400}
@@ -162,11 +159,8 @@ export default function LoginPage() {
 
               {/* Sağ taraf */}
               <div className="flex-1 flex flex-col items-center justify-center p-6">
-                <Typography variant="h5" className="text-center" fontWeight="bold">
-                  Sanatını Sergile
-                </Typography>
                 <Image
-                  src="/seller-signup.jpg" // public klasörüne bir resim koy
+                  src="/uretici.jpg" // public klasörüne bir resim koy
                   alt="Seller Visual"
                   width={400}
                   height={400}
