@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-col items-center justify-center">
-        <Box component="img" src="./home/8.jpg" style={{ objectFit: "cover", width: "80%", marginTop: "-20px",zIndex:"-1" }} alt="example" onClick={()=> router.push("/workshops")} />
+        <Box component="img" src="./home/9.png" style={{ objectFit: "cover", width: "80%", marginTop: "-20px", cursor:"pointer" }} alt="example" onClick={()=> router.push("/workshops")} />
         <Box component="img" src="./home/2.png" style={{ objectFit: "cover", width: "90%", marginTop: "-120px" }} alt="example" />
         <div className="flex flex-col items-center mb-4 gap-12" style={{ marginTop: "-50px" }}>
           <Box component="img" src="./home/4.png" style={{ objectFit: "initial", width: "100%" }} alt="example" />
