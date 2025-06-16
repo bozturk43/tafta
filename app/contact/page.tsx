@@ -8,11 +8,11 @@ const OrderCompletePage = () => {
         <div className="flex flex-col items-center  text-center min-h-screen p-6 mt-8">
             <div className="flex gap-4 mb-18">
                 <div className="flex flex-row bg-[#89CAFD] p-2 rounded-md items-center gap-2">
-                    <Image src="/complete-order-id.png" width={40} height={40} alt="order-id-icon"></Image>
+                    <Image src="/23.png" width={40} height={40} alt="order-id-icon"></Image>
                     <span className="text-white"><strong>534 516 15 97</strong></span>
                 </div>
                 <div className="flex flex-row bg-[#89CAFD] p-2 rounded-md flex items-center gap-2">
-                    <Image src="/complete-order-iban.png" width={40} height={40} alt="order-id-iban"></Image>
+                    <Image src="/24.png" width={40} height={40} alt="order-id-iban"></Image>
                     <span className="text-white"><strong>iletisim.tafta@gmail.com</strong></span>
                 </div>
             </div>
