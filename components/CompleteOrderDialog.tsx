@@ -94,21 +94,18 @@ export default function CompleteOrderDialog({ isOpen, onClose }: { isOpen: boole
                         {...register("name", { required: !user })}
                         error={!!errors.name}
                         helperText={errors.name && "Ad Soyad gereklidir."}
-                        disabled={!!user}
                     />
                     <TextField
                         label="Adres"
                         {...register("address", { required: !user })}
                         error={!!errors.address}
                         helperText={errors.address && "Adres gereklidir."}
-                        disabled={!!user}
                     />
                     <TextField
                         label="Telefon"
                         {...register("phone", { required: !user })}
                         error={!!errors.phone}
                         helperText={errors.phone && "Telefon gereklidir."}
-                        disabled={!!user}
                     />
                 </DialogContent>
                 <DialogActions>
