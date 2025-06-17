@@ -11,13 +11,23 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-type FormValues = {
+type ProducerForm = {
     name: string;
     email: string;
     password: string;
     title: string;
     description: string;
 };
+
+type CustomerForm = {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    address: string;
+};
+
+type FormValues = ProducerForm & Partial<CustomerForm>;
 
 export default function RegisterPageInner({ type }: { type: string }) {
     const router = useRouter();
@@ -34,7 +44,7 @@ export default function RegisterPageInner({ type }: { type: string }) {
         try {
             setLoading(true);
 
-            const response = await fetch(`${baseUrl}/api/auth/register`, {  // API route'un adresini doğru ayarla
+            const response = await fetch(`${baseUrl}/api/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -89,21 +99,46 @@ export default function RegisterPageInner({ type }: { type: string }) {
                         {...register("password", { required: true })}
                         error={!!errors.password}
                     />
-                    <TextField
-                        fullWidth
-                        label="Ünvan"
-                        margin="normal"
-                        {...register("title", { required: true })}
-                        error={!!errors.title}
-                    />
-                    <TextField
-                        fullWidth
-                        label="Açıklama"
-                        margin="normal"
-                        multiline
-                        rows={3}
-                        {...register("description")}
-                    />
+
+                    {type === "producer" && (
+                        <>
+                            <TextField
+                                fullWidth
+                                label="Ünvan"
+                                margin="normal"
+                                {...register("title", { required: true })}
+                                error={!!errors.title}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Açıklama"
+                                margin="normal"
+                                multiline
+                                rows={3}
+                                {...register("description")}
+                            />
+                        </>
+                    )}
+
+                    {type === "customer" && (
+                        <>
+                            <TextField
+                                fullWidth
+                                label="Telefon"
+                                margin="normal"
+                                {...register("phone", { required: true })}
+                                error={!!errors.phone}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Adres"
+                                margin="normal"
+                                {...register("address", { required: true })}
+                                error={!!errors.address}
+                            />
+                        </>
+                    )}
+
                     <Button
                         type="submit"
                         variant="contained"
