@@ -33,6 +33,7 @@ export default function CustomOrderInner({user}:{user:UserType}) {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalImage, setModalImage] = useState<string | null>(null);
     const token = user?.token;
+    console.log(user);
 
 
     useEffect(() => {

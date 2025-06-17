@@ -52,35 +52,31 @@ export async function GET(req: Request) {
                     : data.createdAt || null;
 
                 const customerId = data.customerId;
-                let customer: any = null;
                 let avatar: string | null = null;
 
-                // Firestore'dan customer bilgisi al
+                // Customer bilgisini al
+                const customerDoc = await getDoc(doc(db, "customers", customerId));
+                if (!customerDoc.exists()) {
+                    console.warn(`Customer bulunamadı: ${customerId}`);
+                    return null;
+                }
+                const customerData = customerDoc.data();
+
+                // Avatar'ı al
                 try {
-                    const customerDoc = await getDoc(doc(db, "customers", customerId));
-                    if (customerDoc.exists()) {
-                        customer = customerDoc.data();
-                        try {
-                            const folderRef = ref(storage, "customer_profile_images");
-                            const listResult = await listAll(folderRef);
-
-                            const matchingFile = listResult.items.find((item) =>
-                                item.name.startsWith(customerId)
-                            );
-
-                            if (matchingFile) {
-                                avatar = await getDownloadURL(matchingFile);
-                            }
-                        } catch (err) {
-                            console.warn(`Avatar alınırken hata oluştu: ${err}`);
-                        }
-
+                    const folderRef = ref(storage, "customer_profile_images");
+                    const listResult = await listAll(folderRef);
+                    const matchingFile = listResult.items.find((item) =>
+                        item.name.startsWith(customerId)
+                    );
+                    if (matchingFile) {
+                        avatar = await getDownloadURL(matchingFile);
                     }
-                } catch (e) {
-                    console.warn(`Customer verisi veya avatarı alınamadı: ${customerId}`, e);
+                } catch (err) {
+                    console.warn(`Avatar alınırken hata oluştu: ${err}`);
                 }
 
-                // custom_requests klasöründen görselleri al
+                // custom_requests görsellerini al
                 let imageUrls: string[] = [];
                 try {
                     const imagesRef = ref(storage, `custom_requests/${docSnap.id}`);
@@ -98,19 +94,22 @@ export async function GET(req: Request) {
                     createdAt,
                     images: imageUrls,
                     customer: {
-                        adress: customer.adress,
-                        email: customer.email,
-                        name: customer.name,
-                        phone: customer.phone,
+                        adress: customerData?.adress || "İstanbul,Türkiye",
+                        email: customerData?.email || "",
+                        name: customerData?.name || "",
+                        phone: customerData?.phone || "",
                         avatar,
                     },
                 };
             })
         );
 
-        return NextResponse.json({ requests });
+        const filteredRequests = requests.filter(item => item !== null);
+
+        return NextResponse.json({ requests: filteredRequests });
+
     } catch (error) {
-        console.error(error);
+        console.error("Beklenmeyen Sunucu Hatası:", error);
         return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
     }
 }
